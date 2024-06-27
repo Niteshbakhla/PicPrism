@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+* {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.hover {
+  @apply hover:bg-black hover:text-white px-2 rounded-full
+}

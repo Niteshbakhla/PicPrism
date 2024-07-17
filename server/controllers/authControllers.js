@@ -5,7 +5,7 @@ const { generateAccessToken } = require("../helpers/accessToken");
 const { generateRefreshToken } = require("../helpers/refreshToken");
 exports.signup = async (req, res) => {
 
-           
+
             const { username, email, password, accountType } = req.body;
             try {
                         let isEmailExist = await User.findOne({ email }).select("email, password")
@@ -53,6 +53,8 @@ exports.login = async (req, res) => {
 
                         const accessToken = generateAccessToken(data);
                         const refreshToken = generateRefreshToken(data);
+                        
+                   
                         res.status(200).json({
                                     message: "login Successfully",
                                     success: true,
@@ -61,6 +63,7 @@ exports.login = async (req, res) => {
                                     role: isEmailExist.accountType,
                                     author: isEmailExist.username
                         });
+                        
             } catch (error) {
                         console.log(error)
                         return res.status(500).json({ message: error.message, success: false });

@@ -1,7 +1,10 @@
 import React from 'react'
+import { Dashboard } from '../components/Dashboard'
 
 export const SellerDashboard = () => {
   return (
-    <div>SellerDashboard</div>
+    <div>
+      <Dashboard />
+    </div>
   )
 }

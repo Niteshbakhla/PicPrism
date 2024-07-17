@@ -7,11 +7,14 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import toast, { Toaster, } from "react-hot-toast"
 
+
 export function Signup() {
+
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -43,6 +46,10 @@ export function Signup() {
       if (data.success) {
         toast.success(data.message)
       }
+
+      setTimeout(() => {
+        navigate("/login")
+      }, 1000)
 
     } catch (error) {
 

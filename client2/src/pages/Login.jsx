@@ -7,9 +7,15 @@ import {
             Button,
             Typography,
 } from "@material-tailwind/react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Toaster, toast } from "react-hot-toast"
+import { login } from '../store/slice/authSlice';
+import { useDispatch } from "react-redux"
 
 export function Login() {
+            const navigate = useNavigate()
+            const dispatch = useDispatch()
             const [formData, setFormData] = useState({
                         email: '',
                         password: '',
@@ -26,13 +32,30 @@ export function Login() {
 
 
 
-            const handleSubmit = (e) => {
+            const handleSubmit = async (e) => {
                         e.preventDefault();
+                        try {
+                                    const { data } = await axios.post(import.meta.env.VITE_API_URL + "/login", formData)
+                                    
+                                    if (data.success) {
+                                                toast.success(data.message)
+                                                dispatch(login(data))
+                                                setTimeout(() => {
+                                                            navigate(`/${data.role}/profile`)
+                                                }, 1000);
+                                                return
+                                    }
+
+                        } catch (error) {
+                                    toast.error(error.response.data.message)
+                                    console.log(error)
+                        }
                         console.log('Form Data:', formData);
             };
 
             return (
                         <div className="grid place-content-center min-h-[100vh] w-70 ">
+                                    <Toaster position='top-center' />
                                     <Card color="transparent" shadow={false}>
                                                 <Typography variant="h4" color="blue-gray" className='text-center'>
                                                             Login

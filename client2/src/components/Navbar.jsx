@@ -11,7 +11,7 @@ import {
 
 export function Nav() {
             const [openNav, setOpenNav] = React.useState(false);
-            const location = useLocation()
+            const { pathname } = useLocation()
 
 
             React.useEffect(() => {
@@ -73,7 +73,7 @@ export function Nav() {
             );
 
             return (
-                        <Navbar className="mx-auto sticky z-[999] top-2   mb-4 rounded-none lg:rounded-full    lg:px-8 lg:py-2 backdrop:blur-sm">
+                        <Navbar className={`mx-auto sticky  z-[999] top-2 ${pathname === "/seller/profile" || pathname === "/buyer/profile" ? "hidden" : "block "}   mb-4  rounded-none    lg:px-8 lg:py-2 backdrop:blur-sm`}>
                                     <div className=" mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
                                                 <Link to="/">
                                                             <Typography

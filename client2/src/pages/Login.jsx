@@ -41,7 +41,7 @@ export function Login() {
                                                 toast.success(data.message)
                                                 dispatch(login(data))
                                                 setTimeout(() => {
-                                                            navigate(`/${data.role}/profile`)
+                                                            navigate(`/${data.role}/profile`);
                                                 }, 1000);
                                                 return
                                     }

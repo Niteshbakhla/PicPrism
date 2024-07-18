@@ -17,16 +17,30 @@ import {
 } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../store/slice/authSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 export function Dashboard() {
             const author = useSelector((state) => state.auth.author)
             const dispatch = useDispatch()
+            const navigation = useNavigate()
 
-            const [clickButton, setClickButton] = useState(false)
+            const [clickButton, setClickButton] = useState(false);
+
+            const logouthandle = () => {
+
+                        toast.success("Successfully logout")
+                        setTimeout(() => {
+                                    navigation("/login")
+                                    dispatch(logout())
+                        }, 1000)
+
+            }
             return (
                         <Card className="h-[100vh] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+                                    <Toaster position="top-center" />
+
                                     <div className="mb-2 p-4">
                                                 <Typography variant="h5" color="blue-gray" className="flex items-center justify-between flex-row-reverse">
                                                             {
@@ -47,11 +61,11 @@ export function Dashboard() {
                                                             }
 
 
-
-
-                                                            {
-                                                                        author.charAt(0).toUpperCase() + author.slice(1)
-                                                            }
+                                                            <span className="bg-black text-white w-[60px] h-[60px] rounded-full grid place-content-center text-3xl">
+                                                                        {
+                                                                                    author.charAt(0).toUpperCase()
+                                                                        }
+                                                            </span>
                                                 </Typography>
                                     </div>
                                     <List>
@@ -100,7 +114,7 @@ export function Dashboard() {
                                                             Favourite
                                                 </ListItem>
 
-                                                <ListItem onClick={() => dispatch(logout())} >
+                                                <ListItem onClick={logouthandle} >
                                                             <ListItemPrefix>
                                                                         <PowerIcon className="h-5 w-5" />
                                                             </ListItemPrefix>

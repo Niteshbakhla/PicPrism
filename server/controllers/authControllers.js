@@ -3,13 +3,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { generateAccessToken } = require("../helpers/accessToken");
 const { generateRefreshToken } = require("../helpers/refreshToken");
+
+
 exports.signup = async (req, res) => {
-
-
             const { username, email, password, accountType } = req.body;
             try {
                         let isEmailExist = await User.findOne({ email }).select("email, password")
-
 
                         if (!username || !email || !password) {
                                     return res.status(400).json({ success: false, message: "All fields are required" });
@@ -36,7 +35,6 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
 
-
             const { email, password } = req.body
             try {
                         const isEmailExist = await User.findOne({ email });
@@ -54,8 +52,7 @@ exports.login = async (req, res) => {
                         const accessToken = generateAccessToken(data);
                         const refreshToken = generateRefreshToken(data);
                         
-                   
-                        res.status(200).json({
+                        return res.status(200).json({
                                     message: "login Successfully",
                                     success: true,
                                     accessToken,
@@ -63,13 +60,9 @@ exports.login = async (req, res) => {
                                     role: isEmailExist.accountType,
                                     author: isEmailExist.username
                         });
-                        
+
             } catch (error) {
                         console.log(error)
                         return res.status(500).json({ message: error.message, success: false });
             }
-
-
-
-
 }

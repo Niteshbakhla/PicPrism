@@ -55,12 +55,14 @@ const getMyPosts = async (req, res) => {
                         } else {
                                     const { uploads } = await User.findById(authorId).populate("uploads")
                                     if (!uploads) {
-                                                return res.status(404).json({ success: true, message: error.message });
+                                                return res.status(404).json({ success: false, message: error.message });
                                     }
+
+                                    return res.status(200).json({ success: true, data: uploads })
                         }
             } catch (error) {
                         return res.status(500).json({ success: false, message: "internal sever error" })
             }
 }
 
-module.exports = { createPost, getAllPost }
+module.exports = { createPost, getAllPost, getMyPosts }

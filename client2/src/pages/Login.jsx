@@ -54,7 +54,7 @@ export function Login() {
             };
 
             return (
-                        <div className="grid place-content-center min-h-[100vh] w-70 ">
+                        <div className="grid place-content-center min-h-[80vh] w-70 ">
                                     <Toaster position='top-center' />
                                     <Card color="transparent" shadow={false}>
                                                 <Typography variant="h4" color="blue-gray" className='text-center'>

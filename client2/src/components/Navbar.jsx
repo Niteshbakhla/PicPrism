@@ -43,8 +43,8 @@ export function Nav() {
                                                 className="  font-medium"
                                     >
 
-                                                <Link to="/contact" className={`flex items-center text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/contact" && "bg-black text-white"}`}>
-                                                            Contact
+                                                <Link to="/seller/profile" className={`flex items-center text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/contact" && "bg-black text-white"}`}>
+                                                            Profile
                                                 </Link>
                                     </Typography>
                                     <Typography

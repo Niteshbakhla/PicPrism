@@ -6,10 +6,10 @@ const useUpload = async ({ image, onUploadProgress }) => {
   const upload = async () => {
     try {
       const formData = new FormData()
-
       formData.append("file", image)
+
       formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET)
-      formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_API_KEY)
+      // formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_API_KEY)
 
       const config = {
         headers: {
@@ -19,10 +19,8 @@ const useUpload = async ({ image, onUploadProgress }) => {
         withCredentials: false
       }
 
-      const res = await axios.post(`https//api.cloudinary.com/v1_1/${import.meta.VITE.CLOUDINARY_CLOUD_NAME}/image/upload`)
-
+      const res = await axios.post(`https://api.cloudinary.com/v1_1/ddm0x54ac/image/upload`, formData)
       const data = await res.data;
-
       if (!data) return console.log("Image upload failed")
       return data;
 

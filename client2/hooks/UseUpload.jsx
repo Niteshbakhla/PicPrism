@@ -20,7 +20,7 @@ const useUpload = async ({ image, onUploadProgress }) => {
         withCredentials: false
       }
 
-      const res = await axios.post(`https://api.cloudinary.com/v1_1/ddm0x54ac/image/upload`, formData)
+      const res = await axios.post(`https://api.cloudinary.com/v1_1/ddm0x54ac/image/upload`, formData, config)
       console.log(res)
       const data = await res.data;
       if (!data) return toast.error("Image upload failed")

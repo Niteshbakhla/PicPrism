@@ -6,30 +6,32 @@ import { logout } from '../store/slice/authSlice'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import { setMyPosts } from '../store/slice/postSlice'
+import { useNavigate } from 'react-router-dom'
+import { ImageCard } from '../components/ImageCard'
+import { BiSolidMessageSquareEdit } from "react-icons/bi"
+import { MdDelete } from "react-icons/md";
 
 export const SellerDashboard = () => {
 
-  const posts = useSelector((state) => state.posts.myPosts);
+  const { data: posts } = useSelector((state) => state.posts.myPost);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
 
   const getMyPosts = async () => {
+    // if (posts.length > 0) return;
+
+
     try {
-      if (posts.length > 0) return; 
-      const res = await axios.get(
-        import.meta.env.VITE_API_URL + "/post/myPosts", {
+      const { data } = await axios.get("http://localhost:5000/api/post/", {
         headers: {
-          Authorization: "Bearer" + localStorage.get("accessToken")
+          "Authorization": "Bearer " + localStorage.getItem("accessToken")
         },
       }
       )
-
-      const { data } = await res.data
       dispatch(setMyPosts(data))
 
     } catch (error) {
-      toast.error(error.response.data.message);
-      dispatch(logout())
+      console.log(error)
     }
   }
 
@@ -37,9 +39,34 @@ export const SellerDashboard = () => {
     getMyPosts()
   }, [])
   return (
-    <div className='flex gap-2'>
-      <Dashboard />
-      <DashboardHeader />
-    </div>
+    <React.Fragment>
+      <div className='flex gap-2 min-h-[100vh]  justify-center items-center '>
+        {/* Seller Dashboard left side */}
+        <Dashboard />
+        {/* Seller Dashboard right side */}
+        {/* <DashboardHeader /> */}
+
+        <div className='lg:grid lg:grid-cols-3 '>
+          {
+            posts?.map(({ _id, title, image, author, price }) => (
+              <ImageCard
+                key={_id}
+                _id={_id}
+                title={title}
+                image={image}
+                author={author}
+                price={price}
+                icon1={<BiSolidMessageSquareEdit
+                  title='Edit' className='text-2xl text-black cursor-pointer transition-all ease-linear duration-300' />}
+                icon2={<MdDelete title="Delete"
+                  className="text-2xl text-black cursor-pointer transition-all ease-linear duration-300" />}
+              />
+            ))
+          }
+        </div>
+      </div>
+
+
+    </React.Fragment>
   )
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import {
             Navbar,
             Typography,
@@ -8,10 +8,39 @@ import {
             Input,
             Collapse,
 } from "@material-tailwind/react";
+import toast, { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/slice/authSlice";
 
 export function Nav() {
             const [openNav, setOpenNav] = React.useState(false);
-            const { pathname } = useLocation()
+            const { pathname } = useLocation();
+            const token = localStorage.getItem("accessToken")
+            const dispatch = useDispatch();
+            const navigate = useNavigate();
+
+            const [lastScrollTop, setLastScrollTop] = useState(0);
+            const [navbarVisible, setNavbarVisible] = useState(true);
+
+            const handleScroll = () => {
+                        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+                        if (scrollTop > lastScrollTop) {
+                                    setNavbarVisible(false); // Scrolling down
+                        } else {
+                                    setNavbarVisible(true); // Scrolling up
+                        }
+
+                        setLastScrollTop(scrollTop);
+            };
+
+            useEffect(() => {
+                        window.addEventListener('scroll', handleScroll);
+                        return () => {
+                                    window.removeEventListener('scroll', handleScroll);
+                        };
+            }, [lastScrollTop]);
+
 
 
             React.useEffect(() => {
@@ -19,7 +48,16 @@ export function Nav() {
                                     "resize",
                                     () => window.innerWidth >= 960 && setOpenNav(false),
                         );
+
             }, []);
+
+            const logoutHandle = () => {
+                        toast.success("successfully Logged out")
+                        dispatch(logout())
+                        setTimeout(() => {
+                                    navigate("/login")
+                        }, 1000);
+            }
 
             const navList = (
                         <ul className="  mt-2  mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -47,33 +85,54 @@ export function Nav() {
                                                             Profile
                                                 </Link>
                                     </Typography>
-                                    <Typography
-                                                as="li"
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="  font-medium hover"
-                                    >
+                                    {
+                                                token ? (
 
-                                                <Link to="/login" className={`flex items-center text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/login" && "bg-black text-white"}`}>
-                                                            Login
-                                                </Link>
-                                    </Typography>
-                                    <Typography
-                                                as="li"
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-medium"
-                                    >
+                                                            <Typography
+                                                                        as="li"
+                                                                        variant="small"
+                                                                        color="blue-gray"
+                                                                        className="font-medium"
+                                                            >
 
-                                                <Link to="/signup" className={`flex items-center transition-all  text-[20px] hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/signup" && "bg-black text-white"}`}>
-                                                            Signup
-                                                </Link>
-                                    </Typography>
+                                                                        <Link onClick={() => logoutHandle()} className={`flex items-center transition-all  text-[20px] hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/signup" && "bg-black text-white"}`}>
+                                                                                    logout
+                                                                        </Link>
+                                                            </Typography>
+
+                                                ) : (
+                                                            <div className="flex gap-6 ">
+                                                                        <Typography
+                                                                                    as="li"
+                                                                                    variant="small"
+                                                                                    color="blue-gray"
+                                                                                    className="  font-medium hover"
+                                                                        >
+
+                                                                                    <Link to="/login" className={`flex items-center text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/login" && "bg-black text-white"}`}>
+                                                                                                Login
+                                                                                    </Link>
+                                                                        </Typography>
+                                                                        <Typography
+                                                                                    as="li"
+                                                                                    variant="small"
+                                                                                    color="blue-gray"
+                                                                                    className="font-medium"
+                                                                        >
+
+                                                                                    <Link to="/signup" className={`flex items-center transition-all  text-[20px] hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/signup" && "bg-black text-white"}`}>
+                                                                                                Signup
+                                                                                    </Link>
+                                                                        </Typography>
+                                                            </div>
+                                                )
+                                    }
                         </ul>
             );
 
             return (
-                        <Navbar className={`mx-auto sticky  z-[999] mt-4 ${pathname === "/seller/profile" || pathname === "/Buyer/profile" ? "hidden" : "block "} shadow-none   mb-4  rounded-none    lg:px-8 lg:py-2 backdrop:blur-sm`}>
+                        <Navbar className={`mx-auto fixed top-0   z-[999] mt-3 ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"}  ${pathname === "/seller/profile" || pathname === "/Buyer/profile" ? "hidden" : "block "} sticky  shadow-none   mb-4  rounded-none    lg:px-8 lg:py-2 backdrop:blur-sm`}>
+                                    <Toaster position="top-center" />
                                     <div className=" mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
                                                 <Link to="/">
                                                             <Typography
@@ -119,43 +178,43 @@ export function Nav() {
                                                                         </div>
                                                             </div>
                                                 </div>
-                                                <IconButton
-                                                            variant="text"
-                                                            className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                                                            ripple={false}
-                                                            onClick={() => setOpenNav(!openNav)}
-                                                >
-                                                            {openNav ? (
-                                                                        <svg
-                                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                                    fill="none"
-                                                                                    className="h-6 w-6"
-                                                                                    viewBox="0 0 24 24"
-                                                                                    stroke="currentColor"
-                                                                                    strokeWidth={2}
-                                                                        >
-                                                                                    <path
-                                                                                                strokeLinecap="round"
-                                                                                                strokeLinejoin="round"
-                                                                                                d="M6 18L18 6M6 6l12 12"
-                                                                                    />
-                                                                        </svg>
-                                                            ) : (
-                                                                        <svg
-                                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                                    className="h-6 w-6"
-                                                                                    fill="none"
-                                                                                    stroke="currentColor"
-                                                                                    strokeWidth={2}
-                                                                        >
-                                                                                    <path
-                                                                                                strokeLinecap="round"
-                                                                                                strokeLinejoin="round"
-                                                                                                d="M4 6h16M4 12h16M4 18h16"
-                                                                                    />
-                                                                        </svg>
-                                                            )}
-                                                </IconButton>
+                                                            <IconButton
+                                                                        variant="text"
+                                                                        className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+                                                                        ripple={false}
+                                                                        onClick={() => setOpenNav(!openNav)}
+                                                            >
+                                                                        {openNav ? (
+                                                                                    <svg
+                                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                                fill="none"
+                                                                                                className="h-6 w-6"
+                                                                                                viewBox="0 0 24 24"
+                                                                                                stroke="currentColor"
+                                                                                                strokeWidth={2}
+                                                                                    >
+                                                                                                <path
+                                                                                                            strokeLinecap="round"
+                                                                                                            strokeLinejoin="round"
+                                                                                                            d="M6 18L18 6M6 6l12 12"
+                                                                                                />
+                                                                                    </svg>
+                                                                        ) : (
+                                                                                    <svg
+                                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                                className="h-6 w-6"
+                                                                                                fill="none"
+                                                                                                stroke="currentColor"
+                                                                                                strokeWidth={2}
+                                                                                    >
+                                                                                                <path
+                                                                                                            strokeLinecap="round"
+                                                                                                            strokeLinejoin="round"
+                                                                                                            d="M4 6h16M4 12h16M4 18h16"
+                                                                                                />
+                                                                                    </svg>
+                                                                        )}
+                                                            </IconButton>
                                     </div>
                                     <Collapse open={openNav}>
                                                 <div className="container mx-auto">

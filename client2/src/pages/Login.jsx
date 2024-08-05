@@ -36,21 +36,19 @@ export function Login() {
                         e.preventDefault();
                         try {
                                     const { data } = await axios.post(import.meta.env.VITE_API_URL + "/login", formData)
-                                    
                                     if (data.success) {
                                                 toast.success(data.message)
                                                 dispatch(login(data))
                                                 setTimeout(() => {
-                                                            navigate(`/${data.role}/profile`);
+                                                            navigate(`/${data.role.charAt(0).toLowerCase() + data.role.slice(1) }/profile`);
                                                 }, 1000);
                                                 return
                                     }
 
                         } catch (error) {
                                     toast.error(error.response.data.message)
-                                    console.log(error)
                         }
-                        console.log('Form Data:', formData);
+
             };
 
             return (

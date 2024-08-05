@@ -1,4 +1,5 @@
 import axios from "axios"
+import toast from "react-hot-toast";
 
 
 const useUpload = async ({ image, onUploadProgress }) => {
@@ -20,12 +21,13 @@ const useUpload = async ({ image, onUploadProgress }) => {
       }
 
       const res = await axios.post(`https://api.cloudinary.com/v1_1/ddm0x54ac/image/upload`, formData)
+      console.log(res)
       const data = await res.data;
-      if (!data) return console.log("Image upload failed")
+      if (!data) return toast.error("Image upload failed")
       return data;
 
     } catch (error) {
-      return error.message
+      return console.log(error)
     }
   }
 

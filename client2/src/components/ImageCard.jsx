@@ -9,8 +9,8 @@ import {
 
 export function ImageCard({ id, title, image, author, price }) {
   return (
-    <Card className="mt-6 w-96" id={id}>
-      <CardHeader color="blue-gray" className="relative h-56">
+    <Card className="mt-12 w-96 " id={id}>
+      <CardHeader color="blue-gray" className="relative ">
         <img
           src={image}
           alt="card-image"
@@ -26,11 +26,6 @@ export function ImageCard({ id, title, image, author, price }) {
         </Typography>
         <Typography variant="h6" color="green">
           ${price}
-        </Typography>
-        <Typography className="mt-4">
-          The place is close to Barceloneta Beach and bus stop just 2 min by
-          walk and near to &quot;Naviglio&quot; where you can enjoy the main
-          night life in Barcelona.
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">

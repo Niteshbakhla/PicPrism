@@ -51,7 +51,7 @@ exports.login = async (req, res) => {
 
                         const accessToken = generateAccessToken(data);
                         const refreshToken = generateRefreshToken(data);
-                        
+
                         return res.status(200).json({
                                     message: "login Successfully",
                                     success: true,
@@ -64,5 +64,45 @@ exports.login = async (req, res) => {
             } catch (error) {
                         console.log(error)
                         return res.status(500).json({ message: error.message, success: false });
+            }
+}
+
+exports.refresh = async (req, res) => {
+            const authHeader = req.header['Authorization']
+            const token = authHeader && authHeader.split(" ")[1]
+            if (!token) return res.status(401).json({ success: false, message: "Please Login" })
+
+            try {
+
+                        jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+                                    if (err) {
+                                                return res.status(403).json({ success: false, message: err.message })
+                                    }
+                                    const accessToken = generateAccessToken({
+                                                id: user.id,
+                                                accountType: user.accountType,
+                                                athor: user.author
+                                    });
+
+                                    const refreshToken = generateRefreshToken({
+                                                id: user.id,
+                                                accountType: user.accountType,
+                                                author: user.author
+                                    })
+
+
+                                    return res.status(200).json({
+                                                success: false,
+                                                message: "Token refreshed Successfully",
+                                                accessToken,
+                                                refreshToken,
+                                                role: user.accountType,
+                                                author: user.author
+                                    })
+                        });
+
+
+            } catch (error) {
+                        return res.status(500).json({ success: false, message: error.message })
             }
 }

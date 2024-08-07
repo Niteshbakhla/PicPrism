@@ -25,7 +25,7 @@ import toast, { Toaster } from "react-hot-toast";
 export function Dashboard() {
             const author = useSelector((state) => state.auth.author)
             const menu = useSelector((state) => state.menu.menuOpen)
-            const [openNav, setOpenNav] = useState(false)
+            const [openNav, setOpenNav] = useState(true)
 
             const dispatch = useDispatch()
             const navigation = useNavigate()
@@ -44,7 +44,8 @@ export function Dashboard() {
 
             return (
                         <>
-                                    <Card className={`h-[100vh] absolute -bottom-[100%] lg:-bottom-0 } ${menu === true && "-bottom-0"} w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 fixed left-0 transition-all`}>
+
+                                    <Card className={`h-[100vh]  absolute -bottom-[100%] lg:-bottom-0 } ${menu === true && "-bottom-0"} ${openNav ? "lg:scale-0  transition-all lg:overflow-hidden duration-100 " : "lg:opacity-1 transition-opacity"}  w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 fixed left-0 transition-all`}>
                                                 <Toaster position="top-center" />
                                                 <div className="mb-2 p-4">
                                                             <Typography variant="h5" color="blue-gray" className="flex items-center justify-between flex-row-reverse">
@@ -55,7 +56,7 @@ export function Dashboard() {
                                                                                                 </svg>
 
                                                                                     ) : (
-                                                                                                <Link to={"/home"}>
+                                                                                                <Link to={"/"}>
                                                                                                             <svg onClick={() => setClickButton(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                                                                                         <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                                                                             </svg>
@@ -64,15 +65,19 @@ export function Dashboard() {
                                                                                     )
 
                                                                         }
-
-
-                                                                        <span className="bg-black text-white w-[60px] h-[60px] rounded-full grid place-content-center text-3xl">
+                                                                        <span onClick={() => setOpenNav(!openNav)} className={`bg-black  ${openNav ? "" : "scale-0 opacity-0 duration-50"} text-white w-[60px] h-[60px] rounded-full grid place-content-center  text-3xl`}>
                                                                                     {
                                                                                                 author.charAt(0).toUpperCase()
                                                                                     }
                                                                         </span>
+
+
+
+
                                                             </Typography>
                                                 </div>
+
+
                                                 <List>
                                                             <ListItem>
                                                                         <ListItemPrefix>
@@ -128,6 +133,15 @@ export function Dashboard() {
 
                                                 </List>
                                     </Card>
+
+
+
+
+                                    <span onClick={() => setOpenNav(!openNav)} className={`bg-black  text-white w-[60px] h-[60px] rounded-full lg:grid lg:place-content-center  lg:fixed lg:top-8 lg:left-8 hidden  text-3xl`}>
+                                                {
+                                                            author.charAt(0).toUpperCase()
+                                                }
+                                    </span>
 
 
                         </>

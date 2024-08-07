@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
                         default: "buyer"
             },
 
-            uploads: [
+            uploads: [  
                         {
                                     type: mongoose.Schema.Types.ObjectId,
                                     ref: "Post"

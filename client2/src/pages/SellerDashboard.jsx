@@ -40,13 +40,13 @@ export const SellerDashboard = () => {
   }, [])
   return (
     <React.Fragment>
-      <div className='flex gap-2 min-h-[100vh]  justify-center items-center '>
+      <div className='flex  flex-col  lg:flex-row gap-2 min-h-[100vh]  justify-center items-center lg:p-16 pt-12 '>
         {/* Seller Dashboard left side */}
         <Dashboard />
         {/* Seller Dashboard right side */}
-        {/* <DashboardHeader /> */}
+        <DashboardHeader />
 
-        <div className='lg:grid lg:grid-cols-3 '>
+        <div className='lg:grid lg:grid-cols-3 place-content-start h-[80vh] lg:overflow-auto  lpt-4 scroll-smooth   '>
           {
             posts?.map(({ _id, title, image, author, price }) => (
               <ImageCard
@@ -54,7 +54,6 @@ export const SellerDashboard = () => {
                 _id={_id}
                 title={title}
                 image={image}
-                author={author}
                 price={price}
                 icon1={<BiSolidMessageSquareEdit
                   title='Edit' className='text-2xl text-black cursor-pointer transition-all ease-linear duration-300' />}

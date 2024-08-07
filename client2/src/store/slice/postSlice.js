@@ -14,6 +14,7 @@ const postSlice = createSlice({
 
                         setMyPosts: (state, action) => {
                                     state.myPost = action.payload
+                                    console.log("heyheyhey")
                         }
             }
 })

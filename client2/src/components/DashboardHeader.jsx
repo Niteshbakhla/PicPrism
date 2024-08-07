@@ -12,7 +12,7 @@ const DashboardHeader = () => {
             const dispatch = useDispatch();
 
             return (
-                        <div className='md:w-[50%]  w-[80%] pt-8 pr-6  '>
+                        <div className='md:w-[35%]  w-[80%]  pt-8 pr-6 ml-6 border p-4 rounded-3xl shadow-xl  '>
 
                                     <IconButton
                                                 variant="text"

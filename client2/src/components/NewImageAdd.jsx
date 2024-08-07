@@ -37,7 +37,7 @@ const NewImageAdd = () => {
                                                 image,
                                                 onUploadProgress
                                     });
-                                  
+
                                     if (!public_id || !secure_url) return toast.error("Image upload failed");
 
                                     const res = await axios.post("http://localhost:5000/api/post/create", {
@@ -55,7 +55,7 @@ const NewImageAdd = () => {
 
                                     const data = await res.data;
 
-                               
+
 
                                     if (data.success) {
                                                 toast.success(data.message);
@@ -74,7 +74,7 @@ const NewImageAdd = () => {
 
             return (
                         <>
-                                    <div className="flex flex-col  justify p-4 border">
+                                    <div className="flex flex-col  justify  w-fit ">
                                                 <Toaster position='top-center' />
                                                 <form onSubmit={addPost} className="w-full max-w-md">
                                                             <div className="w-full rounded-md overflow-hidden h-64 mb-4">
@@ -83,30 +83,32 @@ const NewImageAdd = () => {
                                                             <div className="flex flex-col items-start gap-5 w-full mb-4">
                                                                         <input onChange={imageHandle} type="file" id="image" name="image" className='text' />
                                                             </div>
-                                                            <div className="flex flex-col w-full mb-4">
-                                                                        <label htmlFor="title" className="mb-1">Title</label>
-                                                                        <input
-                                                                                    type="text"
-                                                                                    id='title'
-                                                                                    name='title'
-                                                                                    className='border border-gray-300 py-2 px-3 rounded focus:ring-2 outline-none focus:ring-blue-500 w-full'
-                                                                                    value={title}
-                                                                                    onChange={(e) => setTitle(e.target.value)}
-                                                                        />
+                                                            <div className='flex  gap-4'>
+                                                                        <div className="flex flex-col w-[250px] mb-4 shadow-lg">
+                                                                                    <label htmlFor="title" className="mb-1">Title</label>
+                                                                                    <input
+                                                                                                type="text"
+                                                                                                id='title'
+                                                                                                name='title'
+                                                                                                className='border border-gray-300 py-2 px-3 rounded focus:ring-2 outline-none focus:ring-blue-500 w-full'
+                                                                                                value={title}
+                                                                                                onChange={(e) => setTitle(e.target.value)}
+                                                                                    />
+                                                                        </div>
+                                                                        <div className="flex flex-col w-[150px] mb-4 shadow-lg">
+                                                                                    <label htmlFor="price" className="mb-1">Price</label>
+                                                                                    <input
+                                                                                                type="text"
+                                                                                                name="price"
+                                                                                                id="price"
+                                                                                                className="border border-gray-300 py-2 px-3 rounded outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                                                                                value={price}
+                                                                                                onChange={(e) => setPrice(e.target.value)}
+                                                                                                placeholder="₹0"
+                                                                                    />
+                                                                        </div>
                                                             </div>
-                                                            <div className="flex flex-col w-full mb-4">
-                                                                        <label htmlFor="price" className="mb-1">Price</label>
-                                                                        <input
-                                                                                    type="text"
-                                                                                    name="price"
-                                                                                    id="price"
-                                                                                    className="border border-gray-300 py-2 px-3 rounded outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                                                                                    value={price}
-                                                                                    onChange={(e) => setPrice(e.target.value)}
-                                                                                    placeholder="₹0"
-                                                                        />
-                                                            </div>
-                                                            <Button className='w-full py-2 bg-blue-500 text-white rounded' type='submit'>Submit</Button>
+                                                            <Button className='w-full py-2 bg-black  text-white rounded-full' type='submit'>Submit</Button>
                                                 </form>
                                     </div>
                         </>

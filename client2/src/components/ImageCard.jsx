@@ -9,15 +9,15 @@ import {
 
 export function ImageCard({ id, title, image, author, price, icon1, icon2 }) {
   return (
-    <Card className="mt-12 w-100 m-2 " id={id}>
+    <Card className=" mt-12 lg:w-100 lg:h-[300px] m-6 mb-12 " id={id}>
       <CardHeader color="blue-gray" className="relative ">
         <img
           src={image}
           alt="card-image"
-          className="w-full h-full object-cover"
+          className="w-full h-[150px] object-cover"
         />
       </CardHeader>
-      <CardBody>
+      <CardBody className="h-1">
         <Typography variant="h5" color="blue-gray" className="mb-2">
           {title}
         </Typography>
@@ -26,8 +26,8 @@ export function ImageCard({ id, title, image, author, price, icon1, icon2 }) {
           ${price}
         </Typography>
       </CardBody>
-      <CardFooter className="pt-0">
-        <div className="flex">
+      <CardFooter className="pt-0  absolute left-0 right-0  bottom-0  ">
+        <div className=" flex items-end   ">
           {
             icon1
           }

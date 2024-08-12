@@ -65,11 +65,7 @@ export function Dashboard() {
                                                                                     )
 
                                                                         }
-                                                                        <span onClick={() => setOpenNav(!openNav)} className={`bg-black  ${openNav ? "" : "scale-0 opacity-0 duration-50"} text-white w-[60px] h-[60px] rounded-full grid place-content-center  text-3xl`}>
-                                                                                    {
-                                                                                                author.charAt(0).toUpperCase()
-                                                                                    }
-                                                                        </span>
+                                                                        
 
 
 
@@ -137,7 +133,7 @@ export function Dashboard() {
 
 
 
-                                    <span onClick={() => setOpenNav(!openNav)} className={`bg-black  text-white w-[60px] h-[60px] rounded-full lg:grid lg:place-content-center  lg:fixed lg:top-8 lg:left-8 hidden  text-3xl`}>
+                                    <span onClick={() => setOpenNav(!openNav)} className={`bg-black cursor-pointer  text-white w-[60px] h-[60px] rounded-full lg:grid lg:place-content-center  lg:fixed lg:top-8 lg:left-8 hidden  text-3xl`}>
                                                 {
                                                             author.charAt(0).toUpperCase()
                                                 }

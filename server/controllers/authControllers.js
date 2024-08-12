@@ -106,3 +106,37 @@ exports.refresh = async (req, res) => {
                         return res.status(500).json({ success: false, message: error.message })
             }
 }
+
+exports.switchProfile = async (req, res) => {
+            const authorId = req.id;
+            const authorAccountType = req.accountType;
+
+            try {
+                        const user = await User.findByIdAndUpdate(authorId, {
+                                    accountType: authorAccountType === "buyer" ? "seller" : "buyer"
+                        });
+
+
+                        if (!user) return res.status(404).json({
+                                    success: false, message: "User not found"
+                        });
+
+                        const data = {
+                                    id: user._id,
+                                    accountType: user.accountType,
+                                    author: user.username,
+                        }
+
+                        const accessToken = generateAccessToken(data);
+
+                        return res.status(200).json({
+                                    success: true,
+                                    message: `Switched to  ${user.accountType}`,
+                                    accessToken,
+                                    role: user.accountType,
+                                    author: user.username
+                        })
+            } catch (error) {
+                        return res.status(500).json({ success: false, message: "Interval Server error" })
+            }
+}

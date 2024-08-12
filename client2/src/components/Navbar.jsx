@@ -9,7 +9,7 @@ import {
             Collapse,
 } from "@material-tailwind/react";
 import toast, { Toaster } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../store/slice/authSlice";
 import axios from "axios";
 
@@ -20,12 +20,15 @@ export function Nav() {
             const token = localStorage.getItem("accessToken")
             const dispatch = useDispatch();
             const navigate = useNavigate();
+            const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
 
             const [lastScrollTop, setLastScrollTop] = useState(0);
             const [navbarVisible, setNavbarVisible] = useState(true);
 
             const handleScroll = () => {
                         const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+
 
                         if (scrollTop > lastScrollTop) {
                                     setNavbarVisible(false); // Scrolling down
@@ -62,27 +65,32 @@ export function Nav() {
             }
 
 
+
             const refreshToken = async () => {
+
                         try {
                                     const res = await axios.get(import.meta.env.VITE_API_URL + "/refresh", {
                                                 headers: {
                                                             "Authorization": "Bearer " + localStorage.getItem("refreshToken")
                                                 }
-                                    })
+                                    });
 
                                     const data = await res.data;
                                     dispatch((login(data)))
                         } catch (error) {
-                                    dispatch(logout())
+                                    // dispatch(logout())
+                                    console.log(error)
                         }
             }
 
 
             useEffect(() => {
-                        const interval = setInterval(() => {
-                                    refreshToken();
-                        }, 1000 * 60 * 13)
-            })
+                        // const interval = setInterval(() => {
+                        //             refreshToken();
+                        // }, 1000 * 60 * 0.1)
+
+                        refreshToken()
+            }, [])
 
             const navList = (
                         <ul className="  mt-2  mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -99,17 +107,18 @@ export function Nav() {
                                                             About
                                                 </Link>
                                     </Typography>
-                                    <Typography
-                                                as="li"
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="  font-medium"
-                                    >
+                                    {
+                                                isAuthenticated && (<Typography
+                                                            as="li"
+                                                            variant="small"
+                                                            color="blue-gray"
+                                                            className={`font-medium`} >
 
-                                                <Link to="/seller/profile" className={`flex items-center  ${location.pathname === "/seller/profile" || location.pathname === "/buyer/profile" ? "block" : "hidden"} text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/contact" && "bg-black text-white"}`}>
-                                                            Profile
-                                                </Link>
-                                    </Typography>
+                                                            <Link to="/seller/profile" className={`flex items-center   text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/contact" && "bg-black text-white"}`}>
+                                                                        Profile
+                                                            </Link>
+                                                </Typography>)
+                                    }
                                     {
                                                 token ? (
 

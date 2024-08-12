@@ -46,22 +46,26 @@ export const SellerDashboard = () => {
         {/* Seller Dashboard right side */}
         <DashboardHeader />
 
-        <div className='lg:grid lg:grid-cols-3 place-content-start h-[80vh] lg:overflow-auto  lpt-4 scroll-smooth   '>
-          {
-            posts?.map(({ _id, title, image, author, price }) => (
-              <ImageCard
-                key={_id}
-                _id={_id}
-                title={title}
-                image={image}
-                price={price}
-                icon1={<BiSolidMessageSquareEdit
-                  title='Edit' className='text-2xl text-black cursor-pointer transition-all ease-linear duration-300' />}
-                icon2={<MdDelete title="Delete"
-                  className="text-2xl text-black cursor-pointer transition-all ease-linear duration-300" />}
-              />
-            ))
-          }
+        <div>
+     
+          <div className='lg:grid lg:grid-cols-3  place-content-start h-[80vh] lg:overflow-auto bg-black/5   lpt-4 scroll-smooth rounded-md p-8   '>
+
+            {
+              posts?.map(({ _id, title, image, author, price }) => (
+                <ImageCard
+                  key={_id}
+                  _id={_id}
+                  title={title}
+                  image={image}
+                  price={price}
+                  icon1={<BiSolidMessageSquareEdit
+                    title='Edit' className='text-2xl text-black cursor-pointer transition-all ease-linear duration-300' />}
+                  icon2={<MdDelete title="Delete"
+                    className="text-2xl text-black cursor-pointer transition-all ease-linear duration-300" />}
+                />
+              ))
+            }
+          </div>
         </div>
       </div>
 

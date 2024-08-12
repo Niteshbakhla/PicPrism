@@ -18,14 +18,16 @@ import {
 } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../store/slice/authSlice";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { login, logout } from "../store/slice/authSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { PiUserSwitch, PiUserSwitchBold } from "react-icons/pi";
+import axios from "axios";
 
 export function Dashboard() {
-            const author = useSelector((state) => state.auth.author)
-            const menu = useSelector((state) => state.menu.menuOpen)
-            const [openNav, setOpenNav] = useState(true)
+            const author = useSelector((state) => state.auth.author);
+            const menu = useSelector((state) => state.menu.menuOpen);
+            const [openNav, setOpenNav] = useState(true);
 
             const dispatch = useDispatch()
             const navigation = useNavigate()
@@ -39,6 +41,24 @@ export function Dashboard() {
                                     navigation("/login")
                                     dispatch(logout())
                         }, 1000)
+            }
+
+            const switchProfile = async () => {
+                        try {
+                                    const res = await axios.get(import.meta.env.VITE_API_URL + "/switch", {
+                                                headers: {
+                                                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                                                }
+                                    })
+
+                                    const data = res.data;
+                                    console.log(data)
+                                    toast.success(data.role);
+                                    dispatch(login(data))
+                                    navigation(`/${data.role}/profile`)
+                        } catch (error) {
+                                    console.log(error.message)
+                        }
             }
 
 
@@ -63,13 +83,7 @@ export function Dashboard() {
                                                                                                 </Link>
 
                                                                                     )
-
                                                                         }
-                                                                        
-
-
-
-
                                                             </Typography>
                                                 </div>
 
@@ -99,9 +113,7 @@ export function Dashboard() {
 
                                                                         </ListItemPrefix>
                                                                         Analytics
-                                                                        {/* <ListItemSuffix>
-                                                                        <Chip value="104" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-                                                            </ListItemSuffix> */}
+
                                                             </ListItem>
                                                             <ListItem>
                                                                         <ListItemPrefix>
@@ -118,6 +130,14 @@ export function Dashboard() {
 
                                                                         </ListItemPrefix>
                                                                         Favourite
+                                                            </ListItem>
+                                                            <ListItem onClick={switchProfile}>
+                                                                        <ListItemPrefix>
+
+                                                                                    <PiUserSwitch size={24} />
+
+                                                                        </ListItemPrefix>
+                                                                        Switch to {location.pathname === "/seller/profile" ? "buyer" : "seller"}
                                                             </ListItem>
 
                                                             <ListItem onClick={logouthandle} >

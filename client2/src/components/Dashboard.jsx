@@ -18,7 +18,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { login, logout } from "../store/slice/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { PiUserSwitch, PiUserSwitchBold } from "react-icons/pi";

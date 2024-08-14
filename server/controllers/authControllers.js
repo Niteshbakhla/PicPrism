@@ -111,11 +111,13 @@ exports.switchProfile = async (req, res) => {
             const authorId = req.id;
             const authorAccountType = req.accountType;
 
+            
             try {
-                        const user = await User.findByIdAndUpdate(authorId, {
-                                    accountType: authorAccountType === "buyer" ? "seller" : "buyer"
-                        });
-
+                        const user = await User.findByIdAndUpdate(
+                                    authorId,
+                                    { accountType: authorAccountType === "buyer" ? "seller" : "buyer" },
+                                    { new: true }
+                        );
 
                         if (!user) return res.status(404).json({
                                     success: false, message: "User not found"
@@ -140,3 +142,4 @@ exports.switchProfile = async (req, res) => {
                         return res.status(500).json({ success: false, message: "Interval Server error" })
             }
 }
+

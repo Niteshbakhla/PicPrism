@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../store/slice/authSlice";
 import axios from "axios";
+import { setAllPosts } from "../store/slice/postSlice";
 
 
 export function Nav() {
@@ -20,16 +21,14 @@ export function Nav() {
             const token = localStorage.getItem("accessToken")
             const dispatch = useDispatch();
             const navigate = useNavigate();
-            const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+            const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
 
             const [lastScrollTop, setLastScrollTop] = useState(0);
             const [navbarVisible, setNavbarVisible] = useState(true);
 
             const handleScroll = () => {
                         const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-
-
                         if (scrollTop > lastScrollTop) {
                                     setNavbarVisible(false); // Scrolling down
                         } else {
@@ -45,6 +44,17 @@ export function Nav() {
                                     window.removeEventListener('scroll', handleScroll);
                         };
             }, [lastScrollTop]);
+
+            const handleSearch = async (e) => {
+                        try {
+                                    const search = e.target.value;
+                                    const res = await axios.get(import.meta.env.VITE_API_URL + `/posts/search?search=${search}`)
+                                    const { data } = await res.data;
+                                    dispatch(setAllPosts(data))
+                        } catch (error) {
+                                    console.log(error);
+                        }
+            }
 
 
 
@@ -89,21 +99,19 @@ export function Nav() {
                         //             refreshToken();
                         // }, 1000 * 60 * 0.1)
 
-                        refreshToken()
+                        // refreshToken()
             }, [])
 
             const navList = (
-                        <ul className="  mt-2  mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+                        <ul className="  mt-2   mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
                                     <Typography
 
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="  font-medium"
                                     >
-
-
                                                 <Link to="/about" className={`flex  items-center text-[20px] transition-all
-                                                hover:bg-black hover:text-white px-4 lg:rounded-full ${location.pathname === "/about" && "bg-black text-white"}`}>
+                                                hover:bg-black hover:text-white px-4 lg:rounded-full ${location.pathname === "/login" && "hidden"} ${location.pathname === "/signup" && "hidden "} ${location.pathname === "/about" && "bg-black text-white"}`}>
                                                             About
                                                 </Link>
                                     </Typography>
@@ -114,7 +122,7 @@ export function Nav() {
                                                             color="blue-gray"
                                                             className={`font-medium`} >
 
-                                                            <Link to="/seller/profile" className={`flex items-center   text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/contact" && "bg-black text-white"}`}>
+                                                            <Link to={`/${localStorage.getItem("role")}/profile`} className={`flex items-center ${location.pathname === "/login" && 'hidden'} ${location.pathname === "/signup" && "hidden"}   text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/contact" && "bg-black text-white"}`}>
                                                                         Profile
                                                             </Link>
                                                 </Typography>)
@@ -165,12 +173,12 @@ export function Nav() {
             );
 
             return (
-                        <Navbar className={`mx-auto fixed top-0   z-[999] mt-3 ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"}  ${pathname === "/seller/profile" || pathname === "/Buyer/profile" ? "hidden" : "block "} sticky  shadow-none   mb-4  rounded-none    lg:px-8 lg:py-2 backdrop:blur-sm`}>
+                        <Navbar className={`mx-auto fixed top-0   z-[999] mt-3 ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"}  ${pathname === "/seller/profile" || pathname === "/buyer/profile" ? "hidden" : "block "} ${pathname === "/seller/analytics/profile" ? "hidden" : "block"} sticky  shadow-none   mb-4  rounded-none     lg:px-8 lg:py-2 backdrop:blur-sm`}>
                                     <Toaster position="top-center" />
                                     <div className=" mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
                                                 <Link to="/">
                                                             <Typography
-                                                                        className="mr-4 cursor-pointer  font-bold text-[30px]"
+                                                                        className={`mr-4  cursor-pointer  font-bold text-[30px]`}
                                                             >
                                                                         PicPrism
                                                             </Typography>
@@ -179,6 +187,7 @@ export function Nav() {
                                                 <div className="hidden items-center gap-x-2 lg:flex">
                                                             <div className="relative flex w-full gap-2 md:w-max">
                                                                         <Input
+                                                                                    onChange={handleSearch}
                                                                                     type="search"
                                                                                     placeholder="Search your assets...."
                                                                                     containerProps={{

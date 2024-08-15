@@ -7,6 +7,7 @@ import { SellerDashboard } from './pages/SellerDashboard'
 import { BuyerDashboard } from './pages/BuyerDashboard'
 import { Nav } from './components/Navbar'
 import { ProtectedRoute } from './components/Protectedroutes'
+import Analytics from './components/Analytics'
 
 
 function App() {
@@ -26,7 +27,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/seller/profile' element={<ProtectedRoute children={<SellerDashboard />} />} />
-        <Route path='/buyer/profile' element={<ProtectedRoute children={<BuyerDashboard />} />} />
+        <Route path="/seller/analytics/profile" element={<ProtectedRoute children={<Analytics />} />} />
+        <Route path='/buyer/profile' element={<ProtectedRoute children={<BuyerDashboard /> || "hey you fucked up"} />} />
       </Routes>
     </>
   )

@@ -18,7 +18,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { Link,  useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login, logout } from "../store/slice/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { PiUserSwitch, PiUserSwitchBold } from "react-icons/pi";
@@ -52,8 +52,7 @@ export function Dashboard() {
                                     })
 
                                     const data = res.data;
-                                    console.log(data)
-                                    toast.success(data.role);
+
                                     dispatch(login(data))
                                     navigation(`/${data.role}/profile`)
                         } catch (error) {
@@ -65,10 +64,10 @@ export function Dashboard() {
             return (
                         <>
 
-                                    <Card className={`h-[100vh]  absolute -bottom-[100%] lg:-bottom-0 } ${menu === true && "-bottom-0"} ${openNav ? "lg:scale-0  transition-all lg:overflow-hidden duration-100 " : "lg:opacity-1 transition-opacity"}  w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 fixed left-0 transition-all`}>
+                                    <Card className={`h-[100vh]  absolute -bottom-[100%] lg:-bottom-0 shadow-2xl } ${menu === true && "-bottom-0"} ${openNav ? "lg:scale-0  transition-all lg:overflow-hidden duration-100 " : "lg:opacity-1 transition-opacity"}  w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 fixed left-0 transition-all`}>
                                                 <Toaster position="top-center" />
                                                 <div className="mb-2 p-4">
-                                                            <Typography variant="h5" color="blue-gray" className="flex items-center justify-between flex-row-reverse">
+                                                            <Typography variant="h5" color="blue-gray" className="flex items-center justify-between  flex-row-reverse">
                                                                         {
                                                                                     clickButton ? (
                                                                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -104,7 +103,7 @@ export function Dashboard() {
                                                                         </ListItemPrefix>
                                                                         Photo management
                                                             </ListItem>
-                                                            <ListItem>
+                                                            <ListItem onClick={() => navigation("/seller/analytics/profile")} className={`${location.pathname === "/seller/analytics/profile" && "bg-black text-white"}`}>
                                                                         <ListItemPrefix>
                                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                                                                                 <path fill-rule="evenodd" d="M2.25 13.5a8.25 8.25 0 0 1 8.25-8.25.75.75 0 0 1 .75.75v6.75H18a.75.75 0 0 1 .75.75 8.25 8.25 0 0 1-16.5 0Z" clip-rule="evenodd" />
@@ -115,14 +114,14 @@ export function Dashboard() {
                                                                         Analytics
 
                                                             </ListItem>
-                                                            <ListItem>
+                                                            <ListItem className={`${location.pathname === "/seller/orders/profile" && "bg-black text-white"}`}>
                                                                         <ListItemPrefix>
                                                                                     <UserCircleIcon className="h-5 w-5" />
 
                                                                         </ListItemPrefix>
                                                                         Orders
                                                             </ListItem>
-                                                            <ListItem>
+                                                            <ListItem className={`${location.pathname === "/seller/favourite/profile" && "bg-black text-white"}`}>
                                                                         <ListItemPrefix>
                                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                                                                                 <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z" clip-rule="evenodd" />
@@ -131,13 +130,13 @@ export function Dashboard() {
                                                                         </ListItemPrefix>
                                                                         Favourite
                                                             </ListItem>
-                                                            <ListItem onClick={switchProfile}>
+                                                            <ListItem onClick={switchProfile} className={` `}>
                                                                         <ListItemPrefix>
 
                                                                                     <PiUserSwitch size={24} />
 
                                                                         </ListItemPrefix>
-                                                                        Switch to {location.pathname === "/seller/profile" ? "buyer" : "seller"}
+                                                                        Switch to {location.pathname === "/seller/profile" && "buyer" || location.pathname === "/buyer/profile" && "seller"}
                                                             </ListItem>
 
                                                             <ListItem onClick={logouthandle} >
@@ -153,7 +152,7 @@ export function Dashboard() {
 
 
 
-                                    <span onClick={() => setOpenNav(!openNav)} className={`bg-black cursor-pointer  text-white w-[60px] h-[60px] rounded-full lg:grid lg:place-content-center  lg:fixed lg:top-8 lg:left-8 hidden  text-3xl`}>
+                                    <span onClick={() => setOpenNav(!openNav)} className={`bg-black cursor-pointer  text-white w-[60px] h-[60px] rounded-full lg:grid lg:place-content-center  lg:fixed lg:top-4 lg:left-8 hidden  text-3xl`}>
                                                 {
                                                             author.charAt(0).toUpperCase()
                                                 }

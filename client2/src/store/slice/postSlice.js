@@ -9,12 +9,14 @@ const postSlice = createSlice({
 
             reducers: {
                         setAllPosts: (state, action) => {
-                                    state.myPost = action.payload
+                                    state.allPost = action.payload
+                                    
                         },
 
+                       
                         setMyPosts: (state, action) => {
                                     state.myPost = action.payload
-                                    console.log("heyheyhey")
+                                   
                         }
             }
 })

@@ -15,6 +15,10 @@ export const ProtectedRoute = ({ children, requiresAuth = true }) => {
                         return <Navigate to={"/login"} />
             }
 
+            if (isAuthenticated && role === "buyer") {
+                        return children
+            }
+
 
             return children
 

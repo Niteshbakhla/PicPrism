@@ -95,7 +95,7 @@ const deletePost = async (req, res) => {
 }
 
 const searchPost = async (req, res) => {
-            const { } = req.query;
+            const { search } = req.query;
             try {
                         const posts = await Post.find({ title: { $regex: search, $options: "i" } })
                         if (posts.length === 0) {
@@ -164,6 +164,48 @@ const getFavourites = async (req, res) => {
             }
 }
 
+
+const getPostByRange = async (req, res) => {
+            const authorId = req.id;
+            const authorAccountType = req.accountType;
+            let data;
+
+            try {
+                        if (authorAccountType === "buyer") {
+                                    const { purchased } = await User.findById(authorId).populate("purchase")
+                                    data = uploads;
+
+                        } else {
+                                    const { uploads } = await User.findById(authorId).populate("uploads")
+                                    data = uploads;
+                        }
+
+                        if (!data) {
+                                    return res.status(500).json({ success: false, message: "No posts found" })
+                        }
+
+                        const now = new Date();
+                        const startOfYear = new Date(now.getFullYear(), 0, 1)
+                        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+                        const startOfWeek = new Date(now.setDate(now.getDate(), now.getDay()))
+
+                        const postOfThisYear = data.filter((post) => new Date(post.createdAt) >= startOfYear)
+                        const postOfThisMonth = data.filter((post) => new Date(post.createdAt) >= startOfMonth)
+                        const postOfThisWeek = data.filter((post) => new Date(post.createdAt) >= postOfThisWeek)
+
+                        return res.status(200).json({
+                                    success: true, data: {
+                                                tillNow: data,
+                                                thisYear: postOfThisYear,
+                                                thisMonth: postOfThisMonth,
+                                                thisWeek: postOfThisWeek
+                                    }
+                        })
+            } catch (error) {
+                        return res.status(500).json({ success: false, message: "Internal Server error" })
+            }
+}
+
 module.exports = {
             createPost,
             getAllPost,
@@ -172,5 +214,6 @@ module.exports = {
             searchPost,
             addToFavourites,
             removeFromFavourites,
-            getFavourites
+            getFavourites,
+            getPostByRange
 }

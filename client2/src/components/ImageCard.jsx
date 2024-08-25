@@ -6,10 +6,12 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
 
-export function ImageCard({ id, title, image, author, price, icon1, icon2 }) {
+export function ImageCard({ id, title, image, price, icon1, icon2, button, button1 }) {
+  const author = useSelector(state => state.auth.author)
   return (
-    <Card className=" mt-12 lg:w-100 lg:h-[300px] m-6 mb-12 " id={id}>
+    <Card className=" mt-12 w-[300px] h-[300px] pt-4 pb-4 lg:pt-0 lg:pb-0 lg:w-[250px] lg:h-[300px] m-6 mb-12 " id={id}>
       <CardHeader color="blue-gray" className="relative ">
         <img
           src={image}
@@ -27,13 +29,19 @@ export function ImageCard({ id, title, image, author, price, icon1, icon2 }) {
         </Typography>
       </CardBody>
       <CardFooter className="pt-0  absolute left-0 right-0  bottom-0  ">
-        <div className=" flex items-end   ">
+        <div className=" flex items-end justify-between     ">
           {
             icon1
           }
 
           {
             icon2
+          }
+          {
+            button
+          }
+          {
+            button1
           }
         </div>
       </CardFooter>

@@ -15,13 +15,17 @@ const createPost = async (req, res) => {
 
             const { title, author, price, image, publicId } = req.body;
 
+
+
             try {
                         const post = new Post({ title, author, price, image, publicId, authorId })
+                    
                         await post.save();
 
                         await User.findByIdAndUpdate(authorId, {
                                     $push: { uploads: post._id }
                         });
+
 
                         return res.status(201).json({ success: true, message: "Post created successfully", post })
 
@@ -110,27 +114,37 @@ const searchPost = async (req, res) => {
 }
 
 const addToFavourites = async (req, res) => {
-            const { authorId } = req.id
-            const { postId } = req.params
+            const authorId = req.id;
+            const { postId } = req.params;
 
             try {
-                        const user = await User.findByIdAndUpdate(authorId, {
-                                    $push: { favourites: postId }
-                        });
+                        // Find the user first
+                        const user = await User.findById(authorId);
 
                         if (!user) {
-                                    return res.status(404)
-                                                .json({ success: false, message: "User Not Found!" })
+                                    return res.status(404).json({ success: false, message: "User Not Found!" });
                         }
 
-                        return res.status(200).json({ success: true, message: "Added to favourite" })
+                        // Check if the post is already in favourites
+                        if (user.favourites.includes(postId)) {
+                                    return res.status(200).json({ success: false, message: "Post is already in favourites" });
+                        }
+
+                        // If not, add it using $addToSet
+                        await User.findByIdAndUpdate(
+                                    authorId,
+                                    { $addToSet: { favourites: postId } }, // This ensures only unique items are added
+                                    { new: true } // Returns the updated document
+                        );
+
+                        return res.status(200).json({ success: true, message: "Added to favourites" });
             } catch (error) {
-                        return res.status(500).json({ success: false, message: "Internal server error" })
+                        return res.status(500).json({ success: false, message: "Internal server error" });
             }
-}
+};
 
 const removeFromFavourites = async (req, res) => {
-            const { authorId } = req.id
+            const authorId = req.id
             const { postId } = req.params
 
             try {
@@ -166,6 +180,7 @@ const getFavourites = async (req, res) => {
 
 
 const getPostByRange = async (req, res) => {
+
             const authorId = req.id;
             const authorAccountType = req.accountType;
             let data;
@@ -173,12 +188,14 @@ const getPostByRange = async (req, res) => {
             try {
                         if (authorAccountType === "buyer") {
                                     const { purchased } = await User.findById(authorId).populate("purchase")
-                                    data = uploads;
+                                    data = purchased;
 
                         } else {
                                     const { uploads } = await User.findById(authorId).populate("uploads")
                                     data = uploads;
                         }
+
+
 
                         if (!data) {
                                     return res.status(500).json({ success: false, message: "No posts found" })
@@ -191,7 +208,8 @@ const getPostByRange = async (req, res) => {
 
                         const postOfThisYear = data.filter((post) => new Date(post.createdAt) >= startOfYear)
                         const postOfThisMonth = data.filter((post) => new Date(post.createdAt) >= startOfMonth)
-                        const postOfThisWeek = data.filter((post) => new Date(post.createdAt) >= postOfThisWeek)
+                        const postOfThisWeek = data.filter((post) => new Date(post.createdAt) >= startOfWeek)
+
 
                         return res.status(200).json({
                                     success: true, data: {

@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardHeader from './DashboardHeader'
 import { Dashboard } from './Dashboard'
 import { useLocation } from 'react-router-dom'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import ExpanseCard from './ExpanseCard';
+import ExpenseCard from "./ExpanseCard"
+import axios from 'axios';
 
 
 const Analytics = () => {
+            const [tillNow, setTillNow] = useState([])
+            const [thisYear, setThisYear] = useState([])
+            const [thisMonth, setThisMonth] = useState([])
+            const [thisWeek, setThisWeek] = useState([])
+
             const { pathname } = useLocation();
             const data = [
                         {
@@ -53,19 +59,134 @@ const Analytics = () => {
                         },
             ];
 
-            return (
-                        <div className='w-[100%] min-h-[100vh] flex '>
-                                    <Dashboard />
-                                    <div className='w-[85%] min-h-[90vh]  m-auto rounded-2xl shadow-xl p-4'>
-                                                <h1 className='text-6xl'>Analytics</h1>
-                                                <h2>{pathname === "/seller/analytics/profile" ? "Uploaded" : "Purchased"} This year</h2>
+            const getPostByDateRange = async () => {
+                        try {
+                                    const res = await axios.get(import.meta.env.VITE_API_URL + "/post/getPostByDateRange", {
+                                                headers: {
+                                                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                                                }, withCredentials: true
+                                    })
 
-                                                <ExpanseCard />
+                                    const { data } = res.data;
+                                    setTillNow(data.tillNow)
+                                    setThisYear(data.thisYear)
+                                    setThisMonth(data.thisMonth)
+                                    setThisWeek(data.thisWeek)
+
+
+
+                        } catch (error) {
+                                    console.log(error.message)
+                        }
+            }
+
+
+
+
+            useEffect(() => {
+                        getPostByDateRange()
+            }, [])
+
+
+            useEffect(() => {
+                        const calculateTotalForSeller = (data) => {
+
+                                    const value = data.reduce((acc, curr) => {
+                                                const price = curr.price || 0
+                                                const purchase = curr.purchaseBy ? curr.purchaseBy.length : 0
+                                                return acc + (price * purchase)
+                                    }, 0)
+                        }
+            }, [])
+
+            const calculateTotalForSellers = (data) => {
+
+                        const value = data.reduce((acc, curr) => {
+
+                                    return acc += curr.price
+                                    const price = curr.price || 0
+                                    const purchase = curr.purchaseBy ? curr.purchaseBy.length : 0
+                                    return acc + (price * purchase)
+                        }, 0)
+                        console.log(value)
+            }
+
+
+            const calculateTotalForSeller = (data) => {
+                        const value = data.reduce((acc, curr) => {
+                                    const total = acc += curr.price
+                                    return total;
+                                    const price = curr.price || 0
+                                    const purchase = curr.purchaseBy ? curr.purchaseBy.length : 0
+                                    return acc + (price * purchase)
+                        }, 0)
+
+                        return value
+            }
+
+            const calculateTotalForBuyer = (data) => data.reduce((acc, curr) => acc + curr.price, 0)
+            return (
+                        <div className='w-full min-h-screen'>
+
+                                    <Dashboard />
+
+                                    <div className='w-full max-w-6xl m-auto rounded-2xl shadow-xl p-4'>
+                                                <h1 className='text-center text-2xl lg:text-3xl'>Analytics</h1>
+                                                <h2 className='text-center mb-4'>{pathname === "/seller/analytics/profile" ? "Uploaded" : "Purchased"} This year</h2>
+                                                <ResponsiveContainer width="100%" height={300}>
+                                                            <LineChart margin={{ top: 10, bottom: 10, left: 0 }} data={thisYear}>
+                                                                        <XAxis dataKey="title" hide />
+                                                                        <YAxis />
+                                                                        <Tooltip />
+                                                                        <Line type="monotone" dataKey="price" stroke="#8884d8" strokeWidth={2} />
+                                                            </LineChart>
+                                                </ResponsiveContainer>
                                     </div>
 
+                                    <div className='flex flex-col gap-8 lg:flex-row w-full max-w-5xl m-auto mt-8'>
+
+                                                <div className='w-full lg:w-1/3 px-2'>
+                                                            <h1 className='text-center text-2xl lg:text-3xl'>This Week</h1>
+                                                            <ResponsiveContainer width="100%" height={250}>
+                                                                        <LineChart margin={{ top: 10, bottom: 10, left: 0 }} data={thisWeek}>
+                                                                                    <XAxis dataKey="title" hide />
+                                                                                    <YAxis />
+                                                                                    <Tooltip />
+                                                                                    <Line type="monotone" dataKey="price" stroke="#8884d8" strokeWidth={2} />
+                                                                        </LineChart>
+                                                            </ResponsiveContainer>
+                                                </div>
+
+                                                <div className='w-full lg:w-1/3 px-2'>
+                                                            <h1 className='text-center text-2xl lg:text-3xl'>This Month</h1>
+                                                            <ResponsiveContainer width="100%" height={250}>
+                                                                        <LineChart margin={{ top: 10, bottom: 10, left: 0 }} data={thisMonth}>
+                                                                                    <XAxis dataKey="title" hide />
+                                                                                    <YAxis />
+                                                                                    <Tooltip />
+                                                                                    <Line type="monotone" dataKey="price" stroke="#8884d8" strokeWidth={2} />
+                                                                        </LineChart>
+                                                                        <p className='text-center mt-2'><span className='font-medium'>Total Earned</span>: ₹{calculateTotalForSeller(thisMonth) || "₹0"}</p>
+                                                            </ResponsiveContainer>
+                                                </div>
+
+                                                <div className='w-full lg:w-1/3 px-2'>
+                                                            <h1 className='text-center text-2xl lg:text-3xl'>Till Now</h1>
+                                                            <ResponsiveContainer width="100%" height={250}>
+                                                                        <LineChart margin={{ top: 10, bottom: 10, left: 0 }} data={tillNow}>
+                                                                                    <XAxis dataKey="title" hide />
+                                                                                    <YAxis />
+                                                                                    <Tooltip />
+                                                                                    <Line type="monotone" dataKey="price" stroke="#8884d8" strokeWidth={2} />
+                                                                        </LineChart>
+                                                            </ResponsiveContainer>
+                                                </div>
+
+                                    </div>
 
                         </div>
+
             )
 }
 
-export default Analytics
+export default Analytics 

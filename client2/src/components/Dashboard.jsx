@@ -26,7 +26,8 @@ import axios from "axios";
 
 export function Dashboard() {
             const author = useSelector((state) => state.auth.author);
-            const menu = useSelector((state) => state.menu.menuOpen);
+            const blink = useSelector((state) => state.posts.myFavourite);
+            const role = useSelector((state) => state.auth.role)
             const [openNav, setOpenNav] = useState(true);
 
             const dispatch = useDispatch()
@@ -61,10 +62,10 @@ export function Dashboard() {
             }
 
 
+
             return (
                         <>
-
-                                    <Card className={`h-[100vh]  absolute -bottom-[100%] lg:-bottom-0 shadow-2xl } ${menu === true && "-bottom-0"} ${openNav ? "lg:scale-0  transition-all lg:overflow-hidden duration-100 " : "lg:opacity-1 transition-opacity"}  w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 fixed left-0 transition-all`}>
+                                    <Card className={`h-[100vh]  absolute -bottom-[100%] lg:-bottom-0 shadow-2xl z-50 } ${openNav ? "lg:scale-0  transition-all lg:overflow-hidden duration-100 " : "lg:opacity-1 transition-opacity"}  w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 fixed left-0 transition-all`}>
                                                 <Toaster position="top-center" />
                                                 <div className="mb-2 p-4">
                                                             <Typography variant="h5" color="blue-gray" className="flex items-center justify-between  flex-row-reverse">
@@ -114,22 +115,26 @@ export function Dashboard() {
                                                                         Analytics
 
                                                             </ListItem>
-                                                            <ListItem className={`${location.pathname === "/seller/orders/profile" && "bg-black text-white"}`}>
+
+                                                            <ListItem onClick={() => navigation(`/${role}/order/profile`)} className={`${location.pathname === "/buyer/orders/profile" && "bg-black text-white"}`}>
                                                                         <ListItemPrefix>
                                                                                     <UserCircleIcon className="h-5 w-5" />
-
                                                                         </ListItemPrefix>
                                                                         Orders
                                                             </ListItem>
-                                                            <ListItem className={`${location.pathname === "/seller/favourite/profile" && "bg-black text-white"}`}>
+
+                                                            <ListItem onClick={() => navigation("/seller/favourite/profile")} className={`${location.pathname === "/seller/favourite/profile" && "bg-black text-white"} `}>
                                                                         <ListItemPrefix>
                                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                                                                                 <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z" clip-rule="evenodd" />
                                                                                     </svg>
 
                                                                         </ListItemPrefix>
+
                                                                         Favourite
                                                             </ListItem>
+
+
                                                             <ListItem onClick={switchProfile} className={` `}>
                                                                         <ListItemPrefix>
 
@@ -147,12 +152,12 @@ export function Dashboard() {
                                                             </ListItem>
 
                                                 </List>
-                                    </Card>
+                                    </Card >
 
 
 
 
-                                    <span onClick={() => setOpenNav(!openNav)} className={`bg-black cursor-pointer  text-white w-[60px] h-[60px] rounded-full lg:grid lg:place-content-center  lg:fixed lg:top-4 lg:left-8 hidden  text-3xl`}>
+                                    <span onClick={() => setOpenNav(!openNav)} className={`bg-black cursor-pointer z-50  text-white w-[60px] h-[60px] rounded-full lg:grid lg:place-content-center  lg:fixed lg:top-4 lg:left-8 hidden  text-3xl`}>
                                                 {
                                                             author.charAt(0).toUpperCase()
                                                 }

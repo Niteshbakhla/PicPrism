@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { ImageCard } from '../components/ImageCard'
 import { BiSolidMessageSquareEdit } from "react-icons/bi"
 import { MdDelete } from "react-icons/md";
+import Order from '../components/Order'
 
 export const SellerDashboard = () => {
 
@@ -46,9 +47,10 @@ export const SellerDashboard = () => {
         {/* Seller Dashboard right side */}
         <DashboardHeader />
 
-        <div>
-     
-          <div className='lg:grid lg:grid-cols-3  place-content-start h-[80vh] lg:overflow-auto bg-black/5   lpt-4 scroll-smooth rounded-md p-8   '>
+      
+        <div className='w-full'>
+
+          <div className='lg:grid lg:grid-cols-3   place-content-start h-[80vh] lg:overflow-auto bg-black/5   lpt-4 scroll-smooth rounded-md p-8   '>
 
             {
               posts?.map(({ _id, title, image, author, price }) => (

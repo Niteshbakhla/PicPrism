@@ -74,8 +74,6 @@ export function Nav() {
                         }, 1000);
             }
 
-
-
             const refreshToken = async () => {
 
                         try {
@@ -115,6 +113,8 @@ export function Nav() {
                                                             About
                                                 </Link>
                                     </Typography>
+
+
                                     {
                                                 isAuthenticated && (<Typography
                                                             as="li"
@@ -127,22 +127,9 @@ export function Nav() {
                                                             </Link>
                                                 </Typography>)
                                     }
+
                                     {
-                                                token ? (
-
-                                                            <Typography
-                                                                        as="li"
-                                                                        variant="small"
-                                                                        color="blue-gray"
-                                                                        className="font-medium"
-                                                            >
-
-                                                                        <Link onClick={() => logoutHandle()} className={`flex items-center transition-all  text-[20px] hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/signup" && "bg-black text-white"}`}>
-                                                                                    logout
-                                                                        </Link>
-                                                            </Typography>
-
-                                                ) : (
+                                                !token && (
                                                             <div className="flex gap-6 ">
                                                                         <Typography
                                                                                     as="li"
@@ -169,23 +156,24 @@ export function Nav() {
                                                             </div>
                                                 )
                                     }
+
                         </ul>
             );
 
             return (
-                        <Navbar className={`mx-auto fixed top-0   z-[999] mt-3 ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"}  ${pathname === "/seller/profile" || pathname === "/buyer/profile" ? "hidden" : "block "} ${pathname === "/seller/analytics/profile" ? "hidden" : "block"} sticky  shadow-none   mb-4  rounded-none     lg:px-8 lg:py-2 backdrop:blur-sm`}>
+                        <Navbar className={`mx-auto fixed top-0    z-[50] mt-3  ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"}   ${pathname === "/seller/analytics/profile" ? "h-0 overflow-hidden" : "block"} ${pathname === "/Buyer/profile" ? "hidden" : "block"} } sticky  shadow-none   mb-4  rounded-none     lg:px-8 lg:py-2 backdrop:blur-sm`}>
                                     <Toaster position="top-center" />
                                     <div className=" mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
                                                 <Link to="/">
                                                             <Typography
-                                                                        className={`mr-4  cursor-pointer  font-bold text-[30px]`}
+                                                                        className={`mr-4   cursor-pointer  font-bold text-[30px]`}
                                                             >
                                                                         PicPrism
                                                             </Typography>
                                                 </Link>
                                                 <div className="hidden lg:block">{navList}</div>
-                                                <div className="hidden items-center gap-x-2 lg:flex">
-                                                            <div className="relative flex w-full gap-2 md:w-max">
+                                                <div className="hidden items-center gap-x-2 lg:flex  ">
+                                                            <div className={`relative flex w-full gap-2 md:w-max  ${pathname === "/login" && "hidden"} ${pathname === "/signup" && "hidden      "}`}>
                                                                         <Input
                                                                                     onChange={handleSearch}
                                                                                     type="search"

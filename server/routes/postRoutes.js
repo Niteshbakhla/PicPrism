@@ -17,7 +17,7 @@ router.get("/post/", verifyToken, getMyPosts)
 router.delete("/post/delete/:id", verifyToken, deletePost);
 router.get("/posts/search", searchPost)
 router.put("/posts/addToFavourites/:postId", verifyToken, addToFavourites)
-router.put("/posts/addToFavourites/:postId", verifyToken, removeFromFavourites)
+router.put("/posts/removeFavourites/:postId", verifyToken, removeFromFavourites)
 router.get("/post/favourite", verifyToken, getFavourites)
 router.get("/post/getPostByDateRange", verifyToken, getPostByRange)
 module.exports = router

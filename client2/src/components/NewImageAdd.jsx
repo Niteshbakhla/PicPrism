@@ -55,11 +55,7 @@ const NewImageAdd = () => {
                                                             "Authorization": "Bearer " + localStorage.getItem("accessToken")
                                                 }
                                     });
-
-
-
                                     const data = await res.data;
-
 
                                     if (data.success) {
                                                 toast.success(data.message);
@@ -70,31 +66,27 @@ const NewImageAdd = () => {
                                                 setTitle('');
                                                 setPrice('');
                                     }
-
-
                         } catch (error) {
                                     toast.error("Request Failed Please Login again")
                                     console.log(error);
                         }
-
-
             };
 
 
 
             return (
                         <>
-                                    <div className="flex flex-col  justify  w-fit ">
+                                    <div className="flex flex-col    ">
                                                 <Toaster position='top-center' />
-                                                <form onSubmit={addPost} className="w-full max-w-md">
-                                                            <div className="w-full rounded-md overflow-hidden h-64 mb-4">
-                                                                        <img src={image ? URL.createObjectURL(image) : images} alt="" className="h-full w-full object-cover" />
+                                                <form onSubmit={addPost} className="w-full ">
+                                                            <div className=" rounded-md w-[200px] md:w-[400px] overflow-hidden lg:h-64 mb-4">
+                                                                        <img src={image ? URL.createObjectURL(image) : images} alt="" className="h-full lg:w-full w-[300px]  object-cover" />
                                                             </div>
                                                             <div className="flex flex-col items-start gap-5 w-full mb-4">
                                                                         <input onChange={imageHandle} type="file" id="image" name="image" className='text' />
                                                             </div>
-                                                            <div className='flex  gap-4'>
-                                                                        <div className="flex flex-col w-[250px] mb-4 shadow-lg">
+                                                            <div className='flex lg:flex-row flex-col  gap-4'>
+                                                                        <div className="flex flex-col  w-[180px] lg:w-[250px] mb-4 shadow-lg">
                                                                                     <label htmlFor="title" className="mb-1">Title</label>
                                                                                     <input
                                                                                                 type="text"
@@ -118,7 +110,7 @@ const NewImageAdd = () => {
                                                                                     />
                                                                         </div>
                                                             </div>
-                                                            <Button className='w-full py-2  flex justify-center
+                                                            <Button className='lg:w-full py-2  flex justify-center
                                                              bg-black 
                                                               text-white 
                                                               rounded-full' type='submit' >

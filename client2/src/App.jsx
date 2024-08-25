@@ -8,10 +8,14 @@ import { BuyerDashboard } from './pages/BuyerDashboard'
 import { Nav } from './components/Navbar'
 import { ProtectedRoute } from './components/Protectedroutes'
 import Analytics from './components/Analytics'
+import Favourite from './pages/Favourite'
+import Order from './components/Order'
+import { useSelector } from 'react-redux'
 
 
 function App() {
   const navigate = useNavigate()
+  const role = useSelector(state => state.auth.role)
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -28,7 +32,9 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/seller/profile' element={<ProtectedRoute children={<SellerDashboard />} />} />
         <Route path="/seller/analytics/profile" element={<ProtectedRoute children={<Analytics />} />} />
-        <Route path='/buyer/profile' element={<ProtectedRoute children={<BuyerDashboard /> || "hey you fucked up"} />} />
+        <Route path="/seller/favourite/profile" element={<ProtectedRoute children={<Favourite />} />} />
+        <Route path={`/${role}/order/profile`} element={<ProtectedRoute children={<Order />} />} />
+        <Route path='/buyer/profile' element={<ProtectedRoute children={<BuyerDashboard />} />} />
       </Routes>
     </>
   )

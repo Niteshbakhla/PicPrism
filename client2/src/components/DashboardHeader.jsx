@@ -12,7 +12,7 @@ const DashboardHeader = () => {
             const dispatch = useDispatch();
 
             return (
-                        <div className="w-[300px] md:w-[70%] lg:w-[50%]  px-4 md:pt-8 md:px-6 lg:px-8 border rounded-3xl shadow-xl">
+                        <div className="w-[250px] h-[600px] lg:h-[645px]    md:w-[70%] lg:w-[50%]  px-4 md:pt-8 md:px-6 lg:px-8 border rounded-3xl shadow-xl">
                                     <IconButton
                                                 variant="text"
                                                 className="absolute right-4 top-5 ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -42,13 +42,13 @@ const DashboardHeader = () => {
                                                             </svg>
                                                 )}
                                     </IconButton>
-                                    <div className="font-bold text-3xl md:text-4xl lg:text-5xl mb-4">
+                                    <div className="font-bold text-3xl pt-8 md:text-4xl lg:text-5xl mb-4">
                                                 {`Hello ${author.charAt(0).toUpperCase() + author.slice(1)}`}
                                                 <p className="font-extralight text-xl md:text-2xl lg:text-3xl">
                                                             Welcome to your {role} Dashboard
                                                 </p>
                                     </div>
-                                    <div className="mt-4">
+                                    <div className="mt-2">
                                                 <NewImageAdd />
                                     </div>
                         </div>

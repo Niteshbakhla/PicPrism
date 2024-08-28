@@ -41,13 +41,13 @@ export const SellerDashboard = () => {
   }, [])
   return (
     <React.Fragment>
-      <div className='flex  flex-col  lg:flex-row gap-2 min-h-[100vh]  justify-center items-center lg:p-16 pt-12 '>
+      <div className='flex  flex-col  lg:flex-row gap-2 min-h-[100vh] lg:h-[50vh]  justify-center items-center lg:p-16 pt-12 '>
         {/* Seller Dashboard left side */}
         <Dashboard />
         {/* Seller Dashboard right side */}
         <DashboardHeader />
 
-      
+
         <div className='w-full'>
 
           <div className='lg:grid lg:grid-cols-3   place-content-start h-[80vh] lg:overflow-auto bg-black/5   lpt-4 scroll-smooth rounded-md p-8   '>
@@ -62,7 +62,7 @@ export const SellerDashboard = () => {
                   price={price}
                   icon1={<BiSolidMessageSquareEdit
                     title='Edit' className='text-2xl text-black cursor-pointer transition-all ease-linear duration-300' />}
-                  icon2={<MdDelete title="Delete"
+                  icon2={<MdDelete onClick={() => alert("heyhey")} title="Delete"
                     className="text-2xl text-black cursor-pointer transition-all ease-linear duration-300" />}
                 />
               ))

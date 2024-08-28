@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
             Navbar,
             Typography,
@@ -14,177 +14,147 @@ import { login, logout } from "../store/slice/authSlice";
 import axios from "axios";
 import { setAllPosts } from "../store/slice/postSlice";
 
-
 export function Nav() {
-            const [openNav, setOpenNav] = React.useState(false);
+            const [openNav, setOpenNav] = useState(false);
+            const [navbarVisible, setNavbarVisible] = useState(true);
+            const [lastScrollTop, setLastScrollTop] = useState(0);
+
             const { pathname } = useLocation();
-            const token = localStorage.getItem("accessToken")
+            const token = localStorage.getItem("accessToken");
             const dispatch = useDispatch();
             const navigate = useNavigate();
             const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+            const role = useSelector((state) => state.auth.role);
 
-
-            const [lastScrollTop, setLastScrollTop] = useState(0);
-            const [navbarVisible, setNavbarVisible] = useState(true);
-
+            // Handle navbar visibility on scroll
             const handleScroll = () => {
                         const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                        if (scrollTop > lastScrollTop) {
-                                    setNavbarVisible(false); // Scrolling down
-                        } else {
-                                    setNavbarVisible(true); // Scrolling up
-                        }
-
+                        setNavbarVisible(scrollTop <= lastScrollTop);
                         setLastScrollTop(scrollTop);
             };
 
             useEffect(() => {
-                        window.addEventListener('scroll', handleScroll);
+                        window.addEventListener("scroll", handleScroll);
                         return () => {
-                                    window.removeEventListener('scroll', handleScroll);
+                                    window.removeEventListener("scroll", handleScroll);
                         };
             }, [lastScrollTop]);
 
+            // Handle search functionality
             const handleSearch = async (e) => {
                         try {
                                     const search = e.target.value;
-                                    const res = await axios.get(import.meta.env.VITE_API_URL + `/posts/search?search=${search}`)
-                                    const { data } = await res.data;
-                                    dispatch(setAllPosts(data))
+                                    const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts/search?search=${search}`);
+                                    const { data } = res.data;
+                                    dispatch(setAllPosts(data));
                         } catch (error) {
-                                    console.log(error);
+                                    console.error(error);
                         }
-            }
-
-
-
-            React.useEffect(() => {
-                        window.addEventListener(
-                                    "resize",
-                                    () => window.innerWidth >= 960 && setOpenNav(false),
-                        );
-
-            }, []);
-
-            const logoutHandle = () => {
-                        toast.success("successfully Logged out")
-                        dispatch(logout())
-                        setTimeout(() => {
-                                    navigate("/login")
-                        }, 1000);
-            }
-
-            const refreshToken = async () => {
-
-                        try {
-                                    const res = await axios.get(import.meta.env.VITE_API_URL + "/refresh", {
-                                                headers: {
-                                                            "Authorization": "Bearer " + localStorage.getItem("refreshToken")
-                                                }
-                                    });
-
-                                    const data = await res.data;
-                                    dispatch((login(data)))
-                        } catch (error) {
-                                    // dispatch(logout())
-                                    console.log(error)
-                        }
-            }
-
+            };
 
             useEffect(() => {
-                        // const interval = setInterval(() => {
-                        //             refreshToken();
-                        // }, 1000 * 60 * 0.1)
+                        const handleResize = () => {
+                                    if (window.innerWidth >= 960) setOpenNav(false);
+                        };
 
-                        // refreshToken()
-            }, [])
+                        window.addEventListener("resize", handleResize);
+                        return () => {
+                                    window.removeEventListener("resize", handleResize);
+                        };
+            }, []);
 
+            // Handle logout
+            const handleLogout = () => {
+                        toast.success("Successfully logged out");
+                        setTimeout(() => {
+                                    navigate("/login");
+                                    dispatch(logout());
+                        }, 1000);
+            };
+
+            // Navigation list
             const navList = (
-                        <ul className="  mt-2   mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-                                    <Typography
+                        <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
 
+                                    <Typography
                                                 variant="small"
                                                 color="blue-gray"
-                                                className="  font-medium"
+                                                className={`text-lg font-bold px-4 transition-all lg:hidden ${pathname === "/Buyer/order/profile" ? "bg-black text-white rounded-md" : ""}`}
+                                                onClick={() => navigate(`/${role}/order/profile`)}
                                     >
-                                                <Link to="/about" className={`flex  items-center text-[20px] transition-all
-                                                hover:bg-black hover:text-white px-4 lg:rounded-full ${location.pathname === "/login" && "hidden"} ${location.pathname === "/signup" && "hidden "} ${location.pathname === "/about" && "bg-black text-white"}`}>
-                                                            About
-                                                </Link>
+                                                Orders
                                     </Typography>
-
-
-                                    {
-                                                isAuthenticated && (<Typography
-                                                            as="li"
-                                                            variant="small"
-                                                            color="blue-gray"
-                                                            className={`font-medium`} >
-
-                                                            <Link to={`/${localStorage.getItem("role")}/profile`} className={`flex items-center ${location.pathname === "/login" && 'hidden'} ${location.pathname === "/signup" && "hidden"}   text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/contact" && "bg-black text-white"}`}>
+                                    {isAuthenticated && (
+                                                <Typography as="li" variant="small" color="blue-gray" className="font-medium">
+                                                            <Link
+                                                                        to={`/${role}/profile`}
+                                                                        className={`flex items-center lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                    ${["/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}
+                    ${pathname === `/${role.toLowerCase()}/profile` ? "bg-black text-white" : ""}`}
+                                                            >
                                                                         Profile
                                                             </Link>
-                                                </Typography>)
-                                    }
-
-                                    {
-                                                !token && (
-                                                            <div className="flex gap-6 ">
-                                                                        <Typography
-                                                                                    as="li"
-                                                                                    variant="small"
-                                                                                    color="blue-gray"
-                                                                                    className="  font-medium hover"
+                                                </Typography>
+                                    )}
+                                    <Typography
+                                                as="li"
+                                                variant="small"
+                                                color="blue-gray"
+                                                className={`text-lg px-4 font-bold transition-all sm:hidden }`}
+                                                onClick={handleLogout}
+                                    >
+                                                Logout
+                                    </Typography>
+                                    {!token && (
+                                                <div className="flex gap-6">
+                                                            <Typography as="li" variant="small" color="blue-gray" className="font-medium">
+                                                                        <Link
+                                                                                    to="/login"
+                                                                                    className={`flex items-center text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                        ${pathname === "/login" ? "bg-black text-white" : ""}`}
                                                                         >
-
-                                                                                    <Link to="/login" className={`flex items-center text-[20px] transition-all hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/login" && "bg-black text-white"}`}>
-                                                                                                Login
-                                                                                    </Link>
-                                                                        </Typography>
-                                                                        <Typography
-                                                                                    as="li"
-                                                                                    variant="small"
-                                                                                    color="blue-gray"
-                                                                                    className="font-medium"
+                                                                                    Login
+                                                                        </Link>
+                                                            </Typography>
+                                                            <Typography as="li" variant="small" color="blue-gray" className="font-medium">
+                                                                        <Link
+                                                                                    to="/signup"
+                                                                                    className={`flex items-center text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                        ${pathname === "/signup" ? "bg-black text-white" : ""}`}
                                                                         >
-
-                                                                                    <Link to="/signup" className={`flex items-center transition-all  text-[20px] hover:bg-black hover:text-white px-4 lg:rounded-full  ${location.pathname === "/signup" && "bg-black text-white"}`}>
-                                                                                                Signup
-                                                                                    </Link>
-                                                                        </Typography>
-                                                            </div>
-                                                )
-                                    }
-
+                                                                                    Signup
+                                                                        </Link>
+                                                            </Typography>
+                                                </div>
+                                    )}
                         </ul>
             );
 
+
+
             return (
-                        <Navbar className={`mx-auto fixed top-0    z-[50] mt-3  ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"}   ${pathname === "/seller/analytics/profile" ? "h-0 overflow-hidden" : "block"} ${pathname === "/Buyer/profile" ? "hidden" : "block"} } sticky  shadow-none   mb-4  rounded-none     lg:px-8 lg:py-2 backdrop:blur-sm`}>
+                        <Navbar
+                                    className={`mx-auto fixed top-0 z-[50] mt-3 ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"} 
+            ${["/seller/analytics/profile", "/Buyer/profile", "/Seller/profile"].includes(pathname) ? "hidden" : "block"} 
+            sticky shadow-none mb-4 rounded-none lg:px-8 lg:py-2 backdrop:blur-sm`}
+                        >
                                     <Toaster position="top-center" />
-                                    <div className=" mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
+                                    <div className="mx-auto flex flex-wrap items-center justify-between text-blue-gray-900">
                                                 <Link to="/">
-                                                            <Typography
-                                                                        className={`mr-4   cursor-pointer  font-bold text-[30px]`}
-                                                            >
+                                                            <Typography className="mr-4 cursor-pointer font-bold text-[30px]">
                                                                         PicPrism
                                                             </Typography>
                                                 </Link>
                                                 <div className="hidden lg:block">{navList}</div>
-                                                <div className="hidden items-center gap-x-2 lg:flex  ">
-                                                            <div className={`relative flex w-full gap-2 md:w-max  ${pathname === "/login" && "hidden"} ${pathname === "/signup" && "hidden      "}`}>
+                                                <div className="hidden items-center gap-x-2 lg:flex">
+                                                            <div className={`relative flex w-full gap-2 md:w-max ${["/login", "/signup"].includes(pathname) && "hidden"}`}>
                                                                         <Input
                                                                                     onChange={handleSearch}
                                                                                     type="search"
                                                                                     placeholder="Search your assets...."
-                                                                                    containerProps={{
-                                                                                                className: "min-w-[288px]",
-                                                                                    }}
-                                                                                    className=" !border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
-                                                                                    labelProps={{
-                                                                                                className: "before:content-none after:content-none",
-                                                                                    }}
+                                                                                    containerProps={{ className: "min-w-[288px]" }}
+                                                                                    className="!border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
+                                                                                    labelProps={{ className: "before:content-none after:content-none" }}
                                                                         />
                                                                         <div className="!absolute left-3 top-[13px]">
                                                                                     <svg
@@ -200,10 +170,10 @@ export function Nav() {
                                                                                                 />
                                                                                                 <path
                                                                                                             d="M13 13.5L9 9.5M10.3333 6.16667C10.3333 6.7795 10.2126 7.38634 9.97811 7.95252C9.74358 8.51871 9.39984 9.03316 8.9665 9.4665C8.53316 9.89984 8.01871 10.2436 7.45252 10.4781C6.88634 10.7126 6.2795 10.8333 5.66667 10.8333C5.05383 10.8333 4.447 10.7126 3.88081 10.4781C3.31462 10.2436 2.80018 9.89984 2.36683 9.4665C1.93349 9.03316 1.58975 8.51871 1.35523 7.95252C1.12071 7.38634 1 6.7795 1 6.16667C1 4.92899 1.49167 3.742 2.36683 2.86683C3.242 1.99167 4.42899 1.5 5.66667 1.5C6.90434 1.5 8.09133 1.99167 8.9665 2.86683C9.84167 3.742 10.3333 4.92899 10.3333 6.16667Z"
-                                                                                                            stroke="#CFD8DC"
-                                                                                                            stroke-width="2"
-                                                                                                            stroke-linecap="round"
-                                                                                                            stroke-linejoin="round"
+                                                                                                            stroke="#607D8B"
+                                                                                                            strokeWidth="1.5"
+                                                                                                            strokeLinecap="round"
+                                                                                                            strokeLinejoin="round"
                                                                                                 />
                                                                                     </svg>
                                                                         </div>
@@ -233,15 +203,16 @@ export function Nav() {
                                                             ) : (
                                                                         <svg
                                                                                     xmlns="http://www.w3.org/2000/svg"
-                                                                                    className="h-6 w-6"
                                                                                     fill="none"
+                                                                                    className="h-6 w-6"
                                                                                     stroke="currentColor"
                                                                                     strokeWidth={2}
+                                                                                    viewBox="0 0 24 24"
                                                                         >
                                                                                     <path
                                                                                                 strokeLinecap="round"
                                                                                                 strokeLinejoin="round"
-                                                                                                d="M4 6h16M4 12h16M4 18h16"
+                                                                                                d="M4 6h16M4 12h16m-7 6h7"
                                                                                     />
                                                                         </svg>
                                                             )}
@@ -250,33 +221,6 @@ export function Nav() {
                                     <Collapse open={openNav}>
                                                 <div className="container mx-auto">
                                                             {navList}
-                                                            <div className="flex flex-col gap-x-2 sm:flex-row sm:items-center">
-                                                                        <div className="relative w-full gap-2 md:w-max">
-
-                                                                                    <div className="!absolute left-3 top-[13px]">
-                                                                                                <svg
-                                                                                                            width="13"
-                                                                                                            height="14"
-                                                                                                            viewBox="0 0 14 15"
-                                                                                                            fill="none"
-                                                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                                                >
-                                                                                                            <path
-                                                                                                                        d="M9.97811 7.95252C10.2126 7.38634 10.3333 6.7795 10.3333 6.16667C10.3333 4.92899 9.84167 3.742 8.9665 2.86683C8.09133 1.99167 6.90434 1.5 5.66667 1.5C4.42899 1.5 3.242 1.99167 2.36683 2.86683C1.49167 3.742 1 4.92899 1 6.16667C1 6.7795 1.12071 7.38634 1.35523 7.95252C1.58975 8.51871 1.93349 9.03316 2.36683 9.4665C2.80018 9.89984 3.31462 10.2436 3.88081 10.4781C4.447 10.7126 5.05383 10.8333 5.66667 10.8333C6.2795 10.8333 6.88634 10.7126 7.45252 10.4781C8.01871 10.2436 8.53316 9.89984 8.9665 9.4665C9.39984 9.03316 9.74358 8.51871 9.97811 7.95252Z"
-                                                                                                                        fill="#CFD8DC"
-                                                                                                            />
-                                                                                                            <path
-                                                                                                                        d="M13 13.5L9 9.5M10.3333 6.16667C10.3333 6.7795 10.2126 7.38634 9.97811 7.95252C9.74358 8.51871 9.39984 9.03316 8.9665 9.4665C8.53316 9.89984 8.01871 10.2436 7.45252 10.4781C6.88634 10.7126 6.2795 10.8333 5.66667 10.8333C5.05383 10.8333 4.447 10.7126 3.88081 10.4781C3.31462 10.2436 2.80018 9.89984 2.36683 9.4665C1.93349 9.03316 1.58975 8.51871 1.35523 7.95252C1.12071 7.38634 1 6.7795 1 6.16667C1 4.92899 1.49167 3.742 2.36683 2.86683C3.242 1.99167 4.42899 1.5 5.66667 1.5C6.90434 1.5 8.09133 1.99167 8.9665 2.86683C9.84167 3.742 10.3333 4.92899 10.3333 6.16667Z"
-                                                                                                                        stroke="#CFD8DC"
-                                                                                                                        stroke-width="2"
-                                                                                                                        stroke-linecap="round"
-                                                                                                                        stroke-linejoin="round"
-                                                                                                            />
-                                                                                                </svg>
-                                                                                    </div>
-                                                                        </div>
-
-                                                            </div>
                                                 </div>
                                     </Collapse>
                         </Navbar>

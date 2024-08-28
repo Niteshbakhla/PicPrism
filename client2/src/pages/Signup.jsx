@@ -60,13 +60,13 @@ export function Signup() {
   };
 
   return (
-    <div className="grid place-content-center min-h-[90vh] w-70 ">
+    <div className="grid place-content-center min-h-[90vh] w-70  ">
       <Toaster position='top-center' />
       <Card color="transparent" shadow={false}>
-        <Typography variant="h4" color="blue-gray">
+        <Typography variant="h4" color="blue-gray" className='ml-6'>
           Sign Up
         </Typography>
-        <Typography color="gray" className="mt-1 font-normal">
+        <Typography color="gray" className="mt-1 font-normal ml-6">
           Nice to meet you! Enter your details to register.
         </Typography>
         <form className="mt:2 lg:mt-8 md:mt-8  mb-2 w-70 m-auto  lg:w-80  max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
@@ -160,8 +160,8 @@ export function Signup() {
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">
             Already have an account?{" "}
-            <Link to={"/signin"} className="font-medium text-gray-900">
-              Sign In
+            <Link to={"/login"} className="font-medium text-gray-900">
+              Login
             </Link>
           </Typography>
         </form>

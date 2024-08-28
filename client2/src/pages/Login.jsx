@@ -40,7 +40,12 @@ export function Login() {
                                                 toast.success(data.message)
                                                 dispatch(login(data))
                                                 setTimeout(() => {
-                                                            navigate(`/${data.role.charAt(0).toLowerCase() + data.role.slice(1) }/profile`);
+                                                            if (data.role.charAt(0).toLowerCase() === "seller") {
+                                                                        navigate("/seller/profile")
+                                                            } else {
+                                                                        navigate("/")
+                                                            }
+                                                            // navigate(`/${data.role.charAt(0).toLowerCase() + data.role.slice(1)}/profile`);
                                                 }, 1000);
                                                 return
                                     }

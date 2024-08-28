@@ -82,11 +82,11 @@ export const Home = () => {
     }, [])
 
     return (
-        <div className='flex justify-center items-center h-[86vh]'>
+        <div className='flex justify-center items-center   h-[86vh]'>
             <Dashboard />
 
             <Toaster position='top-center' />
-            <div className='max-w-6xl h-[100vh]  mx-auto grid grid-cols-1 lg:shadow-2xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:h-[500px] overflow-y-auto'>
+            <div className='max-w-6xl h-[100vh]    mx-auto  grid grid-cols-1 lg:shadow-2xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 lg:h-[500px] overflow-y-auto'>
                 {
                     posts?.map(({ _id, title, image, price }) => (
                         <ImageCard

@@ -41,6 +41,8 @@ const NewImageAdd = () => {
                                                 onUploadProgress
                                     });
 
+
+
                                     if (!public_id || !secure_url) return toast.error("Image upload failed");
 
                                     setProgress(true)
@@ -48,7 +50,7 @@ const NewImageAdd = () => {
                                                 title,
                                                 price,
                                                 image: secure_url,
-                                                publicId: public_id,
+                                                public_id,
                                                 author
                                     }, {
                                                 headers: {
@@ -78,7 +80,7 @@ const NewImageAdd = () => {
                         <>
                                     <div className="flex flex-col    ">
                                                 <Toaster position='top-center' />
-                                                <form onSubmit={addPost} className="w-full ">
+                                                <form onSubmit={addPost} className="w-full  ">
                                                             <div className=" rounded-md w-[200px] md:w-[400px] overflow-hidden lg:h-64 mb-4">
                                                                         <img src={image ? URL.createObjectURL(image) : images} alt="" className="h-full lg:w-full w-[300px]  object-cover" />
                                                             </div>

@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 export function ImageCard({ id, title, image, price, icon1, icon2, button, button1 }) {
   const author = useSelector(state => state.auth.author)
   return (
-    <Card className=" mt-12 w-[300px] h-[300px] pt-4 pb-4 lg:pt-0 lg:pb-0 lg:w-[250px] lg:h-[300px] m-6 mb-12 " id={id}>
+    <Card className=" mt-12 w-[240px] bg-black/10 h-[300px] pt-4 pb-4 lg:pt-0 lg:pb-0 lg:w-[250px] lg:h-[300px] m-6 mb-12 " id={id}>
       <CardHeader color="blue-gray" className="relative ">
         <img
           src={image}

@@ -18,7 +18,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login, logout } from "../store/slice/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { PiUserSwitch, PiUserSwitchBold } from "react-icons/pi";
@@ -29,9 +29,10 @@ export function Dashboard() {
             const blink = useSelector((state) => state.posts.myFavourite);
             const role = useSelector((state) => state.auth.role)
             const [openNav, setOpenNav] = useState(true);
-
+            const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
             const dispatch = useDispatch()
             const navigation = useNavigate()
+            const { pathname } = useLocation();
 
             const [clickButton, setClickButton] = useState(false);
 
@@ -123,6 +124,19 @@ export function Dashboard() {
                                                                         Orders
                                                             </ListItem>
 
+                                                            {isAuthenticated && (
+                                                                        <Typography as="li" variant="small" color="blue-gray" className="font-medium">
+                                                                                    <Link
+                                                                                                to={`/${role}/profile`}
+                                                                                                className={`flex items-center lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                    ${["/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}
+                    ${pathname === `/${role.toLowerCase()}/profile` ? "bg-black text-white" : ""}`}
+                                                                                    >
+                                                                                                Profile
+                                                                                    </Link>
+                                                                        </Typography>
+                                                            )}
+
                                                             <ListItem onClick={() => navigation("/seller/favourite/profile")} className={`${location.pathname === "/seller/favourite/profile" && "bg-black text-white"} `}>
                                                                         <ListItemPrefix>
                                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -135,7 +149,7 @@ export function Dashboard() {
                                                             </ListItem>
 
 
-                                                            <ListItem onClick={switchProfile} className={` `}>
+                                                            <ListItem onClick={switchProfile}>
                                                                         <ListItemPrefix>
 
                                                                                     <PiUserSwitch size={24} />

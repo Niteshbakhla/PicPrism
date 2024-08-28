@@ -6,25 +6,28 @@ const User = require("../model/user")
 
 const createPost = async (req, res) => {
 
+
             const authorId = req.id;
             const authorAccountType = req.accountType;
+
 
             if (authorAccountType === "buyer") {
                         return res.status(403).json({ success: false, message: "Forbidden, only seller can post" })
             }
 
-            const { title, author, price, image, publicId } = req.body;
+            const { title, author, price, image } = req.body;
 
 
 
             try {
-                        const post = new Post({ title, author, price, image, publicId, authorId })
-                    
+                        const post = new Post({ title, author, price, image, authorId })
+
                         await post.save();
 
                         await User.findByIdAndUpdate(authorId, {
                                     $push: { uploads: post._id }
                         });
+
 
 
                         return res.status(201).json({ success: true, message: "Post created successfully", post })

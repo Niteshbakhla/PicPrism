@@ -1,19 +1,19 @@
 const Order = require("../model/order")
 
 const getOrder = async (req, res) => {
+
             const authorId = req.id
             const authorAccountType = req.accountType;
             const author = req.author;
-
             try {
                         let orders;
 
                         if (authorAccountType === "Seller") {
-                                    orders = await Order.find({});
+                                    orders = await Order.find({ author });
                                     console.log("seller")
 
                         } else {
-                                    orders = await Order.find({ });
+                                    orders = await Order.find({});
                                     console.log("buyer");
                         }
 

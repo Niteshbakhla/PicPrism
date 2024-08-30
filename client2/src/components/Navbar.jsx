@@ -92,7 +92,7 @@ export function Nav() {
                                                             <Link
                                                                         to={`/${role?.toLowerCase()}/profile`}
                                                                         className={`flex items-center rounded-md ${["/login", "/signup"].includes(pathname) && "hidden"} ${pathname === "/seller/profile" ? "bg-black text-white" : ""} lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
-                    ${["/pic-prism-yd56.vercel.app/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}}  `}
+                    ${["/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}}  `}
                                                             >
                                                                         Profile
                                                             </Link>

@@ -26,7 +26,6 @@ import axios from "axios";
 
 export function Dashboard() {
             const author = useSelector((state) => state.auth.author);
-            const blink = useSelector((state) => state.posts.myFavourite);
             const role = useSelector((state) => state.auth.role)
             const [openNav, setOpenNav] = useState(true);
             const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -127,7 +126,7 @@ export function Dashboard() {
                                                             {isAuthenticated && (
                                                                         <Typography as="li" variant="small" color="blue-gray" className="font-medium">
                                                                                     <Link
-                                                                                                to={`/${role}/profile`}
+                                                                                                to={`/${role.toLowerCase()}/profile`}
                                                                                                 className={`flex items-center lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
                     ${["/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}
                     ${pathname === `/${role.toLowerCase()}/profile` ? "bg-black text-white" : ""}`}

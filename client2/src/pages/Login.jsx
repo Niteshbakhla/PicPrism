@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Toaster, toast } from "react-hot-toast";
 import { login } from '../store/slice/authSlice';
 import { useDispatch } from "react-redux";
-import { FcGoogle } from "react-icons/fc"; // Import Google icon
+
 
 
 export function Login() {
@@ -25,14 +25,17 @@ export function Login() {
             };
 
             const handleSubmit = async (e) => {
+
                         e.preventDefault();
+
                         try {
                                     const { data } = await axios.post(import.meta.env.VITE_API_URL + "/login", formData);
+
                                     if (data.success) {
                                                 toast.success(data.message);
                                                 dispatch(login(data));
                                                 setTimeout(() => {
-                                                            if (data.role.charAt(0).toLowerCase() === "seller") {
+                                                            if (data.role.charAt(0).toLowerCase() + data.role.slice(1).toLowerCase() === "seller") {
                                                                         navigate("/seller/profile");
                                                             } else {
                                                                         navigate("/");
@@ -45,19 +48,7 @@ export function Login() {
                         }
             };
 
-            const handleGoogleSignIn = async () => {
-                        try {
-                                    const result = await signInWithPopup(auth, provider);
-                                    const user = result.user;
-                                    // Here, you can send the user info to your backend or proceed as required
-                                    toast.success("Successfully signed in with Google");
-                                    // Example navigation or state handling
-                                    dispatch(login({ email: user.email, role: 'user' })); // Update based on your backend structure
-                                    navigate("/");
-                        } catch (error) {
-                                    toast.error("Failed to sign in with Google");
-                        }
-            };
+
 
             return (
                         <div className="grid place-content-center min-h-[80vh] w-70">
@@ -104,7 +95,7 @@ export function Login() {
                                                             <Button variant="outlined" className="mt-6  rounded-full  text-black hover:bg-black hover:text-white" fullWidth type="submit">
                                                                         Login
                                                             </Button>
-                                                         
+
                                                             <Typography color="gray" className="mt-4 text-center font-normal">
                                                                         Create your account?{" "}
                                                                         <Link to={"/signup"} className="font-medium text-black">

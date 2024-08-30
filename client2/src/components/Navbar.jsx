@@ -82,23 +82,30 @@ export function Nav() {
                                     <Typography
                                                 variant="small"
                                                 color="blue-gray"
-                                                className={`text-lg font-bold px-4 transition-all lg:hidden ${pathname === "/Buyer/order/profile" ? "bg-black text-white rounded-md" : ""}`}
-                                                onClick={() => navigate(`/${role}/order/profile`)}
+                                                className={`text-lg font-bold px-4 transition-all lg:hidden  ${[`/buyer/order/profile`, '/seller/order/profile'].includes(pathname) ? "bg-black text-white rounded-md" : ""} ${["/login", "/signup",].includes(pathname) && "hidden"} `}
+                                                onClick={() => navigate(`/${role.toLowerCase()}/order/profile`)}
                                     >
                                                 Orders
                                     </Typography>
                                     {isAuthenticated && (
                                                 <Typography as="li" variant="small" color="blue-gray" className="font-medium">
                                                             <Link
-                                                                        to={`/${role}/profile`}
-                                                                        className={`flex items-center rounded-md lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
-                    ${["/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}
-                    ${pathname === `/${role.toLowerCase()}/profile` ? "bg-black text-white" : ""}`}
+                                                                        to={`/${role?.toLowerCase()}/profile`}
+                                                                        className={`flex items-center rounded-md ${["/login", "/signup"].includes(pathname) && "hidden"} ${pathname === "/seller/profile" ? "bg-black text-white" : ""} lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                    ${["/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}}  `}
                                                             >
                                                                         Profile
                                                             </Link>
                                                 </Typography>
                                     )}
+                                    <Typography
+                                                onClick={() => navigate(`/${role.toLowerCase()}/analytics/profile`)}
+                                                as="li"
+                                                variant="small"
+                                                color="blue-gray"
+                                                className={`px-4 font-bold text-lg ${["/buyer/analytics/profile", "/seller/analytics/profile"].includes(pathname) ? "bg-black text-white rounded-md" : ""} ${["/login", "/signup"].includes(pathname) && "hidden"}`}                                    >
+                                                Analytics
+                                    </Typography>
 
                                     <Typography
                                                 as="li"
@@ -109,37 +116,41 @@ export function Nav() {
                                     >
                                                 Logout
                                     </Typography>
-                                    {!token && (
-                                                <div className="flex gap-6">
-                                                            <Typography as="li" variant="small" color="blue-gray" className="font-medium">
-                                                                        <Link
-                                                                                    to="/login"
-                                                                                    className={`flex items-center text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                                    {
+                                                !token && (
+                                                            <div className="flex gap-6">
+                                                                        <Typography as="li" variant="small" color="blue-gray" className="font-medium">
+                                                                                    <Link
+                                                                                                to="/login"
+                                                                                                className={`flex items-center text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
                         ${pathname === "/login" ? "bg-black text-white" : ""}`}
-                                                                        >
-                                                                                    Login
-                                                                        </Link>
-                                                            </Typography>
-                                                            <Typography as="li" variant="small" color="blue-gray" className="font-medium">
-                                                                        <Link
-                                                                                    to="/signup"
-                                                                                    className={`flex items-center text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                                                                                    >
+                                                                                                Login
+                                                                                    </Link>
+                                                                        </Typography>
+                                                                        <Typography as="li" variant="small" color="blue-gray" className="font-medium">
+                                                                                    <Link
+                                                                                                to="/signup"
+                                                                                                className={`flex items-center text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
                         ${pathname === "/signup" ? "bg-black text-white" : ""}`}
-                                                                        >
-                                                                                    Signup
-                                                                        </Link>
-                                                            </Typography>
-                                                </div>
-                                    )}
-                        </ul>
+                                                                                    >
+                                                                                                Signup
+                                                                                    </Link>
+                                                                        </Typography>
+                                                            </div>
+                                                )
+                                    }
+
+
+                        </ul >
             );
 
 
 
             return (
                         <Navbar
-                                    className={`mx-auto fixed top-0 z-[50] mt-3 ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"} 
-            ${["/seller/analytics/profile", "/Seller/profile", "/success", "/cancel"].includes(pathname) ? "hidden" : "block"} 
+                                    className={`mx-auto fixed top-0 z-[50] mt-3  ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"} 
+            ${["/success", "/cancel"].includes(pathname) ? "hidden" : "block"} 
             sticky shadow-none mb-4 rounded-none lg:px-8 lg:py-2 backdrop:blur-sm`}
                         >
                                     <Toaster position="top-center" />

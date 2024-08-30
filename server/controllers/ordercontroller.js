@@ -13,7 +13,7 @@ const getOrder = async (req, res) => {
                                     console.log("seller")
 
                         } else {
-                                    orders = await Order.find({});
+                                    orders = await Order.find({ userId: authorId });
                                     console.log("buyer");
                         }
 

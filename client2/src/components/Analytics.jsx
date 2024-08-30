@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ExpenseCard from "./ExpanseCard"
 import axios from 'axios';
+import { Nav } from './Navbar';
 
 
 const Analytics = () => {
@@ -129,6 +130,7 @@ const Analytics = () => {
                         <div className='w-full min-h-screen'>
 
                                     <Dashboard />
+
 
                                     <div className='w-full max-w-6xl m-auto rounded-2xl shadow-xl p-4'>
                                                 <h1 className='text-center text-2xl lg:text-3xl'>Analytics</h1>

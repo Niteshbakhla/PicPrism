@@ -5,7 +5,7 @@ const ExpanseCard = ({ color = "red",thisYear }) => {
           
 
             return (
-                        <div className={`m-2 shadow-xl rounded-x `}>
+                        <div className={`m-2 shadow-xl rounded-x  `}>
                                     <ResponsiveContainer width="100%" height={400}>
                                                 <LineChart margin={{
                                                             top: 20,

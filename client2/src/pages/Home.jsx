@@ -87,6 +87,11 @@ export const Home = () => {
 
             <Toaster position='top-center' />
             <div className='max-w-6xl h-[100vh]    mx-auto  grid grid-cols-1 lg:shadow-2xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 lg:h-[500px] overflow-y-auto'>
+
+                {
+                    !posts && <h1 className='text-6xl absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`'>no post yet</h1>
+                }
+
                 {
                     posts?.map(({ _id, title, image, price }) => (
                         <ImageCard

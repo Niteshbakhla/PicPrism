@@ -50,7 +50,7 @@ export const SellerDashboard = () => {
 
         <div className='w-full'>
 
-          <div className='lg:grid lg:grid-cols-3   place-content-start h-[80vh] lg:overflow-auto bg-black/5   lpt-4 scroll-smooth rounded-md p-8   '>
+          <div className='lg:grid lg:grid-cols-3   place-content-start min-h-[80vh] lg:overflow-auto bg-black/5   pt-4 scroll-smooth rounded-md p-8   '>
 
             {
               posts?.map(({ _id, title, image, author, price }) => (

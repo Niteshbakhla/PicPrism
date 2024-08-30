@@ -26,7 +26,6 @@ const Order = () => {
 
             useEffect(() => {
                         getOrder();
-                        console.log(orders);
             }, []);
 
             return (
@@ -54,11 +53,11 @@ const Order = () => {
                                                                                     {orders.map((order) => (
                                                                                                 <tr
                                                                                                             key={order.reciept}
-                                                                                                            className="border-b hover:bg-blue-gray-300 hover:text-black hover:cursor-pointer"
+                                                                                                            className="border-b hover:bg-blue-gray-300 hover:text-white  hover:cursor-pointer"
                                                                                                 >
-                                                                                                            <td className="py-2 px-3 sm:py-4 sm:px-6 text-center">{order.reciept}</td>
-                                                                                                            <td className="py-2 px-3 sm:py-4 sm:px-6 text-center">{order.title}</td>
-                                                                                                            <td className="py-2 px-3 sm:py-4 sm:px-6 text-center">
+                                                                                                            <td className="  py-2 px-3 sm:py-4 sm:px-6 text-center">{order.reciept}</td>
+                                                                                                            <td className="  py-2 px-3 sm:py-4 sm:px-6 text-center">{order.title}</td>
+                                                                                                            <td className="  py-2 px-3 sm:py-4 sm:px-6 text-center">
                                                                                                                         {role === 'Seller' ? order.nameOfBuyer : order.author.charAt(0).toUpperCase() + order.author.slice(1)}
                                                                                                             </td>
                                                                                                             <td className="py-2 px-3 sm:py-4 sm:px-6 text-center">{order.createdAt}</td>

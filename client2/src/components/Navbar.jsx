@@ -103,7 +103,7 @@ export function Nav() {
                                                 as="li"
                                                 variant="small"
                                                 color="blue-gray"
-                                                className={`px-4 font-bold text-lg ${["/buyer/analytics/profile", "/seller/analytics/profile"].includes(pathname) ? "bg-black text-white rounded-md" : ""} ${["/login", "/signup"].includes(pathname) && "hidden"}`}                                    >
+                                                className={`px-4 font-bold text-lg sm:hidden ${["/buyer/analytics/profile", "/seller/analytics/profile"].includes(pathname) ? "bg-black text-white rounded-md" : ""} ${["/login", "/signup"].includes(pathname) && "hidden"}`}                                    >
                                                 Analytics
                                     </Typography>
 
@@ -149,7 +149,7 @@ export function Nav() {
 
             return (
                         <Navbar
-                                    className={`mx-auto fixed top-0 z-[50] mt-3  ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"} 
+                                    className={`mx-auto fixed top-0 z-[50]  mt-3  ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"} 
             ${["/success", "/cancel"].includes(pathname) ? "hidden" : "block"} 
             sticky shadow-none mb-4 rounded-none lg:px-8 lg:py-2 backdrop:blur-sm`}
                         >

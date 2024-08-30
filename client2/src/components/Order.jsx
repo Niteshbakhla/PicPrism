@@ -60,7 +60,7 @@ const Order = () => {
                                                                                                             <td className="  py-2 px-3 sm:py-4 sm:px-6 text-center">
                                                                                                                         {role === 'Seller' ? order.nameOfBuyer : order.author.charAt(0).toUpperCase() + order.author.slice(1)}
                                                                                                             </td>
-                                                                                                            <td className="py-2 px-3 sm:py-4 sm:px-6 text-center">{order.createdAt}</td>
+                                                                                                            <td className="py-2 px-3 sm:py-4 sm:px-6 text-center">{new Date(order.createdAt).toLocaleString()}</td>
                                                                                                             <td className="py-2 px-3 sm:py-4 sm:px-6 text-center">{order.price}</td>
                                                                                                 </tr>
                                                                                     ))}

@@ -81,25 +81,31 @@ const getMyPosts = async (req, res) => {
 
 const deletePost = async (req, res) => {
             const { id } = req.params;
-            try {
-                        const posts = await Post.find(id)
-                        if (!posts) return res.status(404).json({ success: false, message: "Post not found" })
 
-                        const { authorId } = posts
+            try {
+                        // Find the post by ID
+                        const post = await Post.findById(id);
+                        if (!post) return res.status(404).json({ success: false, message: "Post not found" });
+
+                        // Extract authorId from the found post
+                        const { authorId } = post;
+
+                        // Remove the post reference from the author's uploads
                         await User.findByIdAndUpdate(authorId, {
                                     $pull: { uploads: id }
-                        });
+                        }, { new: true });
 
-                        // await Post.findByIdAndDelete(id)r
+                        // Delete the post
+                        await Post.findByIdAndDelete(id);
 
-                        return res.status(200).json({ success: false, message: "Post deleted successfully" })
-
-
+                        // Send success response
+                        return res.status(200).json({ success: true, message: "Post deleted successfully" });
 
             } catch (error) {
-                        return res.status(500).json({ success: false, message: "Internal Server Error" })
+                        return res.status(500).json({ success: false, message: "Internal Server Error" });
             }
 }
+
 
 const searchPost = async (req, res) => {
             const { search } = req.query;
@@ -189,7 +195,7 @@ const getPostByRange = async (req, res) => {
             let data;
 
             try {
-                        if (authorAccountType === "buyer") {
+                        if (authorAccountType === "Buyer") {
                                     const { purchased } = await User.findById(authorId).populate("purchase")
                                     data = purchased;
 

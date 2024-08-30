@@ -76,8 +76,8 @@ export function Dashboard() {
                                                                                                 </svg>
 
                                                                                     ) : (
-                                                                                                <Link to={"/"}>
-                                                                                                            <svg onClick={() => setClickButton(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                                                                <Link to={"/"} className={`${pathname === "/" && "hidden"}`}>
+                                                                                                            <svg onClick={() => setClickButton(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" >
                                                                                                                         <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                                                                             </svg>
                                                                                                 </Link>
@@ -95,14 +95,16 @@ export function Dashboard() {
                                                                         </ListItemPrefix>
                                                                         Dashboard
                                                             </ListItem>
-                                                            <ListItem>
+                                                            <ListItem
+                                                                        className={`${location.pathname === "/seller/profile" && "bg-black text-white"}`}
+                                                                        onClick={() => navigation(`/${role.toLowerCase()}/profile`)}>
                                                                         <ListItemPrefix>
                                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                                                                                 <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clipRule="evenodd" />
                                                                                     </svg>
 
                                                                         </ListItemPrefix>
-                                                                        Photo management
+                                                                        Profile
                                                             </ListItem>
                                                             <ListItem onClick={() => navigation("/seller/analytics/profile")} className={`${location.pathname === "/seller/analytics/profile" && "bg-black text-white"}`}>
                                                                         <ListItemPrefix>
@@ -116,7 +118,7 @@ export function Dashboard() {
 
                                                             </ListItem>
 
-                                                            <ListItem onClick={() => navigation(`/${role}/order/profile`)} className={`${location.pathname === "/buyer/orders/profile" && "bg-black text-white"}`}>
+                                                            <ListItem onClick={() => navigation(`/${role.toLowerCase()}/order/profile`)} className={`${location.pathname === "/seller/order/profile" && "bg-black text-white"}`}>
                                                                         <ListItemPrefix>
                                                                                     <UserCircleIcon className="h-5 w-5" />
                                                                         </ListItemPrefix>
@@ -154,7 +156,7 @@ export function Dashboard() {
                                                                                     <PiUserSwitch size={24} />
 
                                                                         </ListItemPrefix>
-                                                                        Switch to {location.pathname === "/seller/profile" && "buyer" || location.pathname === "/buyer/profile" && "seller"}
+                                                                        Switch to {role === "Seller" ? "Buyer" : "Seller"}
                                                             </ListItem>
 
                                                             <ListItem onClick={logouthandle} >

@@ -36,6 +36,26 @@ export const SellerDashboard = () => {
     }
   }
 
+  const deletePost = async (postId) => {
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_API_URL}/post/delete/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        withCredentials: true
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message)
+      } else {
+        console.error("Failed to delete the post:", response.data.message);
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      console.error("An error occurred while deleting the post:", error.message);
+    }
+  };
+
   useEffect(() => {
     getMyPosts()
   }, [])
@@ -62,7 +82,7 @@ export const SellerDashboard = () => {
                   price={price}
                   icon1={<BiSolidMessageSquareEdit
                     title='Edit' className='text-2xl text-black cursor-pointer transition-all ease-linear duration-300' />}
-                  icon2={<MdDelete onClick={() => alert("heyhey")} title="Delete"
+                  icon2={<MdDelete onClick={() => deletePost(_id)} title="Delete"
                     className="text-2xl text-black cursor-pointer transition-all ease-linear duration-300" />}
                 />
               ))

@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
                         required: true,
             },
 
-
             accountType: {
                         type: String,
                         default: "buyer"

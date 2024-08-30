@@ -12,7 +12,7 @@ connectDB();
 app.use(express.json());
 app.use(cors(
             {
-                        origin: "*",
+                        origin: "https://pic-prism-ten.vercel.app",
                         credentials: true
             }
 ));

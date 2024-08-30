@@ -41,7 +41,7 @@ export function Login() {
                                                                         navigate("/");
                                                             }
                                                 }, 1000);
-                                                return;
+                                                return;     
                                     }
                         } catch (error) {
                                     toast.error(error.response.data.message);

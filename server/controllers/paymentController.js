@@ -5,41 +5,7 @@ const Order = require("../model/order")
 const Post = require("../model/post")
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
-exports.generateOrders = async (req, res) => {
-            return console.log(req)
-            const purchaseId = req.id;
-            const { price, } = req.body;
-            try {
 
-                        let user = await User.findById(purchaseId);
-                        if (!user) {
-                                    return res.status(404).json({ success: false, message: "User not found" })
-                        }
-
-                        const options = {
-                                    amount: Number(price * 10),
-                                    currency: "INR",
-                                    receipt: Crypto.randomBytes(10).toString("hex")
-                        }
-
-                        razorpayInstance.orders.create(options, (error, order) => {
-                                    if (error) {
-                                                console.error("Razorpay API Error:", error); // Log the exact error
-                                                return res.status(500).json({ success: false, message: error.message });
-                                    }
-
-                                    if (!order) {
-                                                console.error("Order creation returned null.");
-                                                return res.status(500).json({ success: false, message: "Order creation failed. Order is null." });
-                                    }
-
-                                    return res.status(200).json({ success: true, data: order });
-                        });
-
-            } catch (error) {
-                        return res.status(500).json({ success: false, message: "Internal server error" })
-            }
-}
 
 exports.generateOrder = async (req, res) => {
 
@@ -106,14 +72,14 @@ exports.generateOrder = async (req, res) => {
                                                 },
                                     ],
                                     mode: 'payment',
-                                    success_url: `http://localhost:5000/success?orderId=${newOrder._id}`,
-                                    cancel_url: 'http://localhost:5000/cancel',
+                                    success_url: `http://localhost:5173/success`,
+                                    cancel_url: 'http://localhost:5173/cancel',
                         });
 
                         newOrder.stripeSessionId = session.id;
                         await newOrder.save();
 
-                        return res.status(200).json({ success: true, id: session.id, posts });
+                        return res.status(200).json({ success: true, id: session.id, posts, });
             } catch (error) {
                         console.error("Error generating order:", error); // Log the error
                         return res.status(500).json({ success: false, message: "Internal server error" });

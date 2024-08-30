@@ -11,6 +11,8 @@ import Analytics from './components/Analytics'
 import Favourite from './pages/Favourite'
 import Order from './components/Order'
 import { useSelector } from 'react-redux'
+import PaymentSuccess from './pages/PaymentSuccess'
+import CancelPaymentPage from './pages/CancelPayment'
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Route path="/seller/analytics/profile" element={<ProtectedRoute children={<Analytics />} />} />
         <Route path="/seller/favourite/profile" element={<ProtectedRoute children={<Favourite />} />} />
         <Route path={`/${role}/order/profile`} element={<ProtectedRoute children={<Order />} />} />
+        <Route path='/success' element={<PaymentSuccess />} />
+        <Route path='/cancel' element={<CancelPaymentPage />} />
         <Route path='/buyer/profile' element={<ProtectedRoute children={<BuyerDashboard />} />} />
       </Routes>
     </>

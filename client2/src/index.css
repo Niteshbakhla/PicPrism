@@ -8,3 +8,25 @@
 }
 
 
+/* Add this in your global CSS or within a <style> tag in the component */
+@keyframes confetti-fall {
+            0% {
+                        transform: translateY(-100%) rotate(0deg);
+                        opacity: 1;
+            }
+
+            100% {
+                        transform: translateY(100vh) rotate(360deg);
+                        opacity: 0;
+            }
+}
+
+.confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffcd3c;
+            opacity: 0;
+            animation: confetti-fall linear infinite;
+}
+

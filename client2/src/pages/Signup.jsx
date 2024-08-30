@@ -155,7 +155,7 @@ export function Signup() {
             onChange={handleChange}
             required
           />
-          <Button className="mt-6" fullWidth type="submit">
+          <Button className="mt-6 rounded-full hover:bg-black hover:text-white " variant='outlined' fullWidth type="submit">
             Sign Up
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">

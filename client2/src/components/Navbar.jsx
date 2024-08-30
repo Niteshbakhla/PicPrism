@@ -33,12 +33,15 @@ export function Nav() {
                         setLastScrollTop(scrollTop);
             };
 
+
+
             useEffect(() => {
                         window.addEventListener("scroll", handleScroll);
                         return () => {
                                     window.removeEventListener("scroll", handleScroll);
                         };
             }, [lastScrollTop]);
+
 
             // Handle search functionality
             const handleSearch = async (e) => {
@@ -88,7 +91,7 @@ export function Nav() {
                                                 <Typography as="li" variant="small" color="blue-gray" className="font-medium">
                                                             <Link
                                                                         to={`/${role}/profile`}
-                                                                        className={`flex items-center lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
+                                                                        className={`flex items-center rounded-md lg:hidden text-lg transition-all hover:bg-black hover:text-white px-4 lg:rounded-full 
                     ${["/login", "/signup", "/contact"].includes(pathname) ? "hidden" : ""}
                     ${pathname === `/${role.toLowerCase()}/profile` ? "bg-black text-white" : ""}`}
                                                             >
@@ -96,11 +99,12 @@ export function Nav() {
                                                             </Link>
                                                 </Typography>
                                     )}
+
                                     <Typography
                                                 as="li"
                                                 variant="small"
                                                 color="blue-gray"
-                                                className={`text-lg px-4 font-bold transition-all sm:hidden }`}
+                                                className={`text-lg px-4 font-bold transition-all sm:hidden ${["/login", "/signup"].includes(pathname) ? "hidden" : "block"}`}
                                                 onClick={handleLogout}
                                     >
                                                 Logout
@@ -135,7 +139,7 @@ export function Nav() {
             return (
                         <Navbar
                                     className={`mx-auto fixed top-0 z-[50] mt-3 ${navbarVisible ? "top-[0%] transition-all" : "top-[-100%] transition-all"} 
-            ${["/seller/analytics/profile", "/Buyer/profile", "/Seller/profile"].includes(pathname) ? "hidden" : "block"} 
+            ${["/seller/analytics/profile", "/Seller/profile", "/success", "/cancel"].includes(pathname) ? "hidden" : "block"} 
             sticky shadow-none mb-4 rounded-none lg:px-8 lg:py-2 backdrop:blur-sm`}
                         >
                                     <Toaster position="top-center" />

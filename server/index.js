@@ -12,7 +12,7 @@ connectDB();
 app.use(express.json());
 app.use(cors(
             {
-                        origin: "https://pic-frontend-theta.vercel.app",
+                        origin: "*",
                         credentials: true
             }
 ));

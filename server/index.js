@@ -10,7 +10,12 @@ connectDB();
 
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+            {
+                        origin: "https://pic-frontend-theta.vercel.app",
+                        credentials: true
+            }
+));
 readdirSync("./routes").map((route) => {
             app.use("/api", require(`./routes/${route}`));
 })

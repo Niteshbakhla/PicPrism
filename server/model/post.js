@@ -8,7 +8,8 @@ const postSchema = new mongoose.Schema({
             },
             author: {
                         type: String,
-                        required: true,
+                        required: true
+
             },
 
             price: {
@@ -23,7 +24,6 @@ const postSchema = new mongoose.Schema({
 
             publicId: {
                         type: String,
-                        required: true
             },
 
             authorId: {

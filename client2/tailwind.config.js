@@ -8,7 +8,17 @@ export default withMT(
       "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-      extend: {},
+      extend: {
+        keyframes: {
+          'confetti-fall': {
+            '0%': { transform: 'translateY(-100%) rotate(0deg)', opacity: '1' },
+            '100%': { transform: 'translateY(100vh) rotate(360deg)', opacity: '0' },
+          },
+        },
+        animation: {
+          'confetti-fall': 'confetti-fall linear infinite',
+        },
+      },
     },
     plugins: [],
   }

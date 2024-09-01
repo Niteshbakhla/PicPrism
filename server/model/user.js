@@ -17,13 +17,12 @@ const userSchema = new mongoose.Schema({
                         required: true,
             },
 
-
             accountType: {
                         type: String,
                         default: "buyer"
             },
 
-            uploads: [
+            uploads: [  
                         {
                                     type: mongoose.Schema.Types.ObjectId,
                                     ref: "Post"
